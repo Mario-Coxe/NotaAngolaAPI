@@ -1,5 +1,5 @@
 # NotaAngola
-NotaAngola  é um sistema Sistema Multitenancy (SaaS) para Gestão de Notas
+NotaAngola  é um sistema Sistema Multitenancy para Gestão de Notas
 
 
 Neste projeto, estamos propondo o desenvolvimento de um sistema multitenancy (SaaS) para
