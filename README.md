@@ -1,9 +1,11 @@
-##TEMA: Desenvolvimento de um Aplicativo Mobile Multitenancy para Gestão de Notas
-Escolares
-Neste projeto, proponho o desenvolvimento de um aplicativo mobile multitenancy voltado
+**TEMA:Desenvolvimento de um Aplicativo Mobile Multitenancy para Gestão de Notas
+Escolares**
+
+_Neste projeto, proponho o desenvolvimento de um aplicativo mobile multitenancy voltado
 para a gestão de notas escolares. O objetivo é criar uma solução abrangente que facilite a
 administração acadêmica, melhore os processos escolares e fortaleça a comunicação entre
-professores, alunos e pais.
+professores, alunos e pais._
+
 O aplicativo terá como foco principal o gerenciamento de notas de estudantes em diversas
 instituições acadêmicas. Ele permitirá que os professores cadastrem as notas, os alunos acessem
 suas próprias notas e os pais acompanhem o desempenho de seus filhos. Além disso, o aplicativo
@@ -15,6 +17,7 @@ forma rápida e precisa. Os alunos terão acesso simplificado às suas próprias
 interface visualmente atraente. Também será possível a comunicação entre pais e professores, por
 meio de um chat dedicado a cada turma, possibilitando a interação e o acompanhamento das notas
 dos alunos.
+
 A aplicação contará com recursos automatizados de cálculo de notas, permitindo que os
 professores insiram os critérios de avaliação e pesos para cada componente. O aplicativo calculará
 as notas finais automaticamente. Além disso, serão gerados quadros de honra em âmbito escolar e
@@ -25,6 +28,7 @@ organização dos alunos e no acompanhamento das atividades acadêmicas. Também
 armazenar o histórico de notas de cada aluno, permitindo que alunos, pais e professores
 acompanhem o progresso ao longo do tempo e identifiquem tendências ou áreas que necessitam de
 melhoria.
+
 O aplicativo apresentará análises em gráficos(poderá ser um progressbar) visuais para
 auxiliar professores, alunos e pais a compreender o desempenho do aluno em diferentes áreas ou
 disciplinas. Isso permitirá identificar pontos fortes e áreas que precisam de mais atenção. Além
@@ -34,6 +38,7 @@ React Native, React e Laravel, garantindo uma arquitetura escalável e segura. A
 projetada para operar em um ambiente multitenancy, permitindo que diferentes instituições
 acadêmicas utilizem o aplicativo de forma independente, com suas próprias configurações e dados
 privados.
-Acredito que essa solução de aplicativo mobile multitenancy para gestão de notas escolares
+
+_**Acredito que essa solução de aplicativo mobile multitenancy para gestão de notas escolares
 trará inúmeras vantagens para a área educacional, promovendo a centralização das notas,
-oferecendo recursos inteligentes e facilitando a comunicação entre professores, alunos e pais.
+oferecendo recursos inteligentes e facilitando a comunicação entre professores, alunos e pais.**___
