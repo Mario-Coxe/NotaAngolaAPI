@@ -5,9 +5,33 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Instituicao;
 
 class StudentController extends Controller
 {
+
+
+    public function getAllStudentsInstitution(Request $request, $id)
+    {
+        // Verificar se a instituição com o ID fornecido existe
+        $instituicao = Instituicao::find($id);
+    
+        if (!$instituicao) {
+            // Retornar uma resposta JSON com uma mensagem de erro
+            return response()->json(['message' => 'Instituição não encontrada']);
+        }
+    
+        // Verificar se há estudantes associados à instituição
+        $student = $instituicao->student;
+    
+        if ($student->isEmpty()) {
+            // Retornar uma resposta JSON com uma mensagem de aviso
+            return response()->json(['message' => 'Nenhum estudante encontrado para esta instituição']);
+        }
+    
+        // Retornar os estudantes como uma resposta JSON
+        return response()->json(['estudantes' => $student]);
+    }
 
     public function getAllStudents(){
         $students= Student::all();

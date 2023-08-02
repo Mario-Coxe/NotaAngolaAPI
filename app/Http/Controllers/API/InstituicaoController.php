@@ -5,9 +5,27 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Instituicao;
+use App\Models\Student;
 
 class InstituicaoController extends Controller
 {
+
+    public function getAllStudentsInstitution(Request $request, $id)
+    {
+        // Verificar se a instituição com o ID fornecido existe
+        $instituicao = Instituicao::findOrFail($id);
+
+        // Recuperar todos os alunos da instituição através do relacionamento definido no model
+        $student = $instituicao->student;
+
+        // Retornar os alunos como uma resposta JSON
+        return response()->json(
+            [
+                'estudante' => $student
+            ]
+        );
+    }
+
     public function getAllInstitution()
     {
         $instituicao = Instituicao::all();
@@ -16,6 +34,7 @@ class InstituicaoController extends Controller
             'instituicao' => $instituicao,
         ]);
     }
+
 
     public function create(Request $request)
     {

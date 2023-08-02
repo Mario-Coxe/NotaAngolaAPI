@@ -18,13 +18,13 @@ class Instituicao extends Model
         'localizacao',
         'telefone',
         'email',
-        'encaregado',
+        'encarregado',
         'status',
     ];
 
-    // Relação com o encarregado
-    public function encarregado()
+    // Relação com os alunos
+    public function student()
     {
-        return $this->belongsTo(Encarregado::class, 'encaregado');
+        return $this->hasMany(Student::class, 'idInstituicao');
     }
 }

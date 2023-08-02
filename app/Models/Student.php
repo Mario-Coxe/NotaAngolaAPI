@@ -37,4 +37,9 @@ class Student extends Model
         return $this->belongsTo(Encarregado::class, 'encarregado');
     }
 
+    public function student()
+    {
+        return $this->hasMany(Student::class, 'idInstituicao');
+    }
+
 }
