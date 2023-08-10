@@ -6,32 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Instituicao;
 use App\Models\Student;
+use App\Models\Professor;
 
 class InstituicaoController extends Controller
 {
 
-    public function getAllStudentsInstitution(Request $request, $id)
-    {
-        // Verificar se a instituição com o ID fornecido existe
-        $instituicao = Instituicao::findOrFail($id);
-
-        // Recuperar todos os alunos da instituição através do relacionamento definido no model
-        $student = $instituicao->student;
-
-        // Retornar os alunos como uma resposta JSON
-        return response()->json(
-            [
-                'estudante' => $student
-            ]
-        );
-    }
-
+    // Obter todos as escolas
     public function getAllInstitution()
     {
         $instituicao = Instituicao::all();
         return response()->json([
             'status' => 200,
             'instituicao' => $instituicao,
+        ]);
+    }
+
+
+    // Obter todos os professores
+    public function getAllTeachers()
+    {
+        $professores = Professor::all();
+        return response()->json([
+            'status' => 200,
+            'professores' => $professores,
         ]);
     }
 
@@ -108,4 +105,7 @@ class InstituicaoController extends Controller
             'message' => 'Instituicao Deleted succefully',
         ]);
     }
+
+
+
 }

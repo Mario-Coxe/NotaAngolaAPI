@@ -27,4 +27,17 @@ class Instituicao extends Model
     {
         return $this->hasMany(Student::class, 'idInstituicao');
     }
+
+    // Relação com os encarregados
+    public function incharges()
+    {
+        return $this->hasMany(Encarregado::class, 'idInstituicao');
+    }
+
+
+    public function professores()
+    {
+        return $this->belongsToMany(Professor::class, 'professor_instituicao');
+    }
+
 }

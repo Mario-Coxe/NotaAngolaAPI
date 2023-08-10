@@ -17,20 +17,21 @@ return new class extends Migration
             $table->bigIncrements('idAluno'); // Chave primária auto incremento
             $table->unsignedBigInteger('idInstituicao'); // Chave estrangeira para 'instituicoes'
             $table->unsignedBigInteger('idTurma'); // Chave estrangeira para 'turmas'
+            $table->unsignedBigInteger('idEncarregado'); // Chave estrangeira para 'encarregados'
             $table->string('nome', 150);
             $table->date('dataNascimento');
             $table->enum('genero', ['Masculino', 'Femenino']);
             $table->string('BI', 50);
             $table->string('email', 100);
             $table->string('morada', 50);
-            $table->unsignedBigInteger('encarregado')->nullable(); // Chave estrangeira para 'encarregados'
+            
 
             $table->timestamps();
-
+         
             // Chaves estrangeiras
             $table->foreign('idInstituicao')->references('idInstituicao')->on('instituicoes');
             $table->foreign('idTurma')->references('idTurma')->on('turmas');
-            $table->foreign('encarregado')->references('idEncarregado')->on('encarregados');
+            $table->foreign('idEncarregado')->references('idEncarregado')->on('encarregados');
         });
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Encarregado;
+use App\Models\Instituicao;
 
 class EncarregadosController extends Controller
 {
@@ -33,7 +34,7 @@ class EncarregadosController extends Controller
         $encarregado->parentesco = $request->input('parentesco');
         $encarregado->telefone = $request->input('telefone');
         $encarregado->email = $request->input('email');
-        $encarregado->senha = $request->input('senha');
+        $encarregado->senha = password_hash($request->input('senha'), PASSWORD_DEFAULT);
         $encarregado->save();
         
 
@@ -89,4 +90,5 @@ class EncarregadosController extends Controller
             'message' => 'encarregado Deleted succefully',
         ]);
     }
+
 }

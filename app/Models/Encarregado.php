@@ -21,9 +21,6 @@ class Encarregado extends Model
         'senha',
     ];
 
-    // Relação com a instituição (caso exista uma chave estrangeira)
-    // public function instituicao()
-    // {
-    //     return $this->belongsTo(Instituicao::class, 'Instituicao');
-    // }
+    
+
 }
