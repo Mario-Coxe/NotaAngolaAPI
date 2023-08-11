@@ -1,44 +1,71 @@
-**TEMA:Desenvolvimento de um Aplicativo Mobile Multitenancy para Gestão de Notas
-Escolares**
+# Aplicativo Mobile Multitenancy para Gestão de Notas Escolares
 
-_Neste projeto, proponho o desenvolvimento de um aplicativo mobile multitenancy voltado
-para a gestão de notas escolares. O objetivo é criar uma solução abrangente que facilite a
-administração acadêmica, melhore os processos escolares e fortaleça a comunicação entre
-professores, alunos e pais._
+Este repositório contém o código-fonte de um aplicativo mobile multitenancy desenvolvido para a gestão de notas escolares. A aplicação foi construída utilizando tecnologias modernas, incluindo React Native, React e Laravel, visando fornecer uma solução completa para a administração acadêmica, melhorar os processos escolares e facilitar a comunicação entre professores, alunos e pais.
 
-O aplicativo terá como foco principal o gerenciamento de notas de estudantes em diversas
-instituições acadêmicas. Ele permitirá que os professores cadastrem as notas, os alunos acessem
-suas próprias notas e os pais acompanhem o desempenho de seus filhos. Além disso, o aplicativo
-contará com recursos inteligentes para auxiliar no cálculo das notas, gerar boletins.
-Uma das principais vantagens do aplicativo será a centralização das informações das notas
-em um único local, garantindo o acesso e a consulta facilitados para alunos, pais e professores.
-Com uma interface intuitiva e de fácil usabilidade, os professores poderão cadastrar notas de
-forma rápida e precisa. Os alunos terão acesso simplificado às suas próprias notas por meio de uma
-interface visualmente atraente. Também será possível a comunicação entre pais e professores, por
-meio de um chat dedicado a cada turma, possibilitando a interação e o acompanhamento das notas
-dos alunos.
+## Endpoints da API
 
-A aplicação contará com recursos automatizados de cálculo de notas, permitindo que os
-professores insiram os critérios de avaliação e pesos para cada componente. O aplicativo calculará
-as notas finais automaticamente. Além disso, serão gerados quadros de honra em âmbito escolar e
-por sala de aula, destacando os alunos com melhor desempenho acadêmico.
-A integração de um calendário no aplicativo permitirá que os alunos visualizem prazos
-importantes, como datas de provas, entrega de trabalhos e eventos escolares. Isso ajudará na
-organização dos alunos e no acompanhamento das atividades acadêmicas. Também será possível
-armazenar o histórico de notas de cada aluno, permitindo que alunos, pais e professores
-acompanhem o progresso ao longo do tempo e identifiquem tendências ou áreas que necessitam de
-melhoria.
+A seguir, estão listados os endpoints disponíveis na API deste projeto:
 
-O aplicativo apresentará análises em gráficos(poderá ser um progressbar) visuais para
-auxiliar professores, alunos e pais a compreender o desempenho do aluno em diferentes áreas ou
-disciplinas. Isso permitirá identificar pontos fortes e áreas que precisam de mais atenção. Além
-disso, serão enviados alertas e notificações automáticas para alunos e pais sobre novas notas
-lançadas, médias alcançadas ou quaisquer atualizações relevantes relacionadas às notas.O desenvolvimento do aplicativo será realizado utilizando tecnologias modernas como
-React Native, React e Laravel, garantindo uma arquitetura escalável e segura. A solução será
-projetada para operar em um ambiente multitenancy, permitindo que diferentes instituições
-acadêmicas utilizem o aplicativo de forma independente, com suas próprias configurações e dados
-privados.
+### Estudantes
 
-_**Acredito que essa solução de aplicativo mobile multitenancy para gestão de notas escolares
-trará inúmeras vantagens para a área educacional, promovendo a centralização das notas,
-oferecendo recursos inteligentes e facilitando a comunicação entre professores, alunos e pais.**___
+- `GET /api/studentInstitution/{id}`: Retorna todos os estudantes de uma determinada instituição.
+- `GET /api/studentIncharge/{id}`: Retorna o encarregado de um estudante específico.
+- `POST /api/createStudent`: Cria um novo estudante.
+- `GET /api/readStudent/{id}`: Retorna os detalhes de um estudante.
+- `PUT /api/updateStudent/{id}`: Atualiza as informações de um estudante.
+- `DELETE /api/deleteStudent/{id}`: Remove um estudante.
+
+### Instituições
+
+- `POST /api/createInstitution`: Cria uma nova instituição.
+- `GET /api/readInstitution/{id}`: Retorna os detalhes de uma instituição.
+- `PUT /api/updateInstitution/{id}`: Atualiza as informações de uma instituição.
+- `DELETE /api/deleteInstitution/{id}`: Remove uma instituição.
+
+### Encarregados
+
+- `POST /api/createIncharge`: Cria um novo encarregado.
+- `GET /api/readIncharge/{id}`: Retorna os detalhes de um encarregado.
+- `PUT /api/updateIncharge/{id}`: Atualiza as informações de um encarregado.
+- `DELETE /api/deleteIncharge/{id}`: Remove um encarregado.
+
+### Administração
+
+- `GET /api/getAllInstitution`: Retorna todas as instituições.
+- `GET /api/getAllStudents`: Retorna todos os estudantes.
+- `GET /api/getAllTeachers`: Retorna todos os professores.
+- `GET /api/getAllIncharge`: Retorna todos os encarregados.
+
+### Professores
+
+- `POST /api/createTeacher`: Cria um novo professor.
+- `GET /api/readTeacher/{id}`: Retorna os detalhes de um professor.
+- `PUT /api/updateTeacher/{id}`: Atualiza as informações de um professor.
+- `DELETE /api/deleteTeacher/{id}`: Remove um professor.
+
+## Configuração
+
+Para configurar e executar este projeto localmente, siga estas etapas:
+
+1. Clone este repositório: `git clone https://github.com/seu-usuario/seu-repositorio.git`
+2. Instale as dependências do Laravel: `composer install`
+3. Instale as dependências do React Native: `npm install`
+4. Configure o ambiente e o banco de dados no arquivo `.env`
+5. Execute as migrações do banco de dados: `php artisan migrate`
+6. Inicie o servidor Laravel: `php artisan serve`
+7. Inicie o servidor React Native: `npm start`
+
+## Contribuição
+
+Contribuições são bem-vindas! Se você quiser contribuir para este projeto, siga estas etapas:
+
+1. Faça um fork deste repositório.
+2. Crie uma branch para a sua feature ou correção: `git checkout -b minha-feature`
+3. Faça as alterações desejadas.
+4. Commit suas alterações: `git commit -m 'Minha nova feature'`
+5. Faça o push para a branch: `git push origin minha-feature`
+6. Crie um novo Pull Request.
+
+## Licença
+
+Este projeto está sob a licença XYZ. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
