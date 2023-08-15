@@ -2,46 +2,55 @@
 
 Este repositório contém o código-fonte de um aplicativo mobile multitenancy desenvolvido para a gestão de notas escolares. A aplicação foi construída utilizando tecnologias modernas, incluindo React Native, React e Laravel, visando fornecer uma solução completa para a administração acadêmica, melhorar os processos escolares e facilitar a comunicação entre professores, alunos e pais.
 
-## Endpoints da API
+# Documentation for API Endpoints
 
-A seguir, estão listados os endpoints disponíveis na API deste projeto:
+This document provides an overview of the available endpoints in the API and their functionalities.
 
-### Estudantes
+## Students
 
-- `GET /api/studentInstitution/{id}`: Retorna todos os estudantes de uma determinada instituição.
-- `GET /api/studentIncharge/{id}`: Retorna o encarregado de um estudante específico.
-- `POST /api/createStudent`: Cria um novo estudante.
-- `GET /api/readStudent/{id}`: Retorna os detalhes de um estudante.
-- `PUT /api/updateStudent/{id}`: Atualiza as informações de um estudante.
-- `DELETE /api/deleteStudent/{id}`: Remove um estudante.
+- `GET /studentInstitution/{instituicaoId}`: Get all students from a specific institution.
+- `GET /studentIncharge/{studentId}`: Get the guardian of a specific student.
+- `POST /createStudent`: Create a new student.
+- `GET /readStudent/{id}`: Get details of a specific student.
+- `PUT /updateStudent/{id}`: Update information of a specific student.
+- `DELETE /deleteStudent/{id}`: Delete a specific student.
 
-### Instituições
+## Institutions
 
-- `POST /api/createInstitution`: Cria uma nova instituição.
-- `GET /api/readInstitution/{id}`: Retorna os detalhes de uma instituição.
-- `PUT /api/updateInstitution/{id}`: Atualiza as informações de uma instituição.
-- `DELETE /api/deleteInstitution/{id}`: Remove uma instituição.
+- `POST /createInstitution`: Create a new institution.
+- `GET /readInstitution/{id}`: Get details of a specific institution.
+- `PUT /updateInstitution/{id}`: Update information of a specific institution.
+- `DELETE /deleteInstitution/{id}`: Delete a specific institution.
+- `GET /getAllInstitution`: Get details of all institutions.
+- `GET /getAllTeachers`: Get details of all teachers in institutions.
 
-### Encarregados
+## Guardians (Encarregados)
 
-- `POST /api/createIncharge`: Cria um novo encarregado.
-- `GET /api/readIncharge/{id}`: Retorna os detalhes de um encarregado.
-- `PUT /api/updateIncharge/{id}`: Atualiza as informações de um encarregado.
-- `DELETE /api/deleteIncharge/{id}`: Remove um encarregado.
+- `POST /createIncharge`: Create a new guardian.
+- `GET /readIncharge/{id}`: Get details of a specific guardian.
+- `PUT /updateIncharge/{id}`: Update information of a specific guardian.
+- `DELETE /deleteIncharge/{id}`: Delete a specific guardian.
+- `GET /getAllIncharge`: Get details of all guardians.
 
-### Administração
+## Teachers (Professores)
 
-- `GET /api/getAllInstitution`: Retorna todas as instituições.
-- `GET /api/getAllStudents`: Retorna todos os estudantes.
-- `GET /api/getAllTeachers`: Retorna todos os professores.
-- `GET /api/getAllIncharge`: Retorna todos os encarregados.
+- `POST /createTeacher`: Create a new teacher.
+- `GET /readTeacher/{id}`: Get details of a specific teacher.
+- `PUT /updateTeacher/{id}`: Update information of a specific teacher.
+- `DELETE /deleteTeacher/{id}`: Delete a specific teacher.
+- `POST /teacherInstitution/{professorId}`: Add a teacher to an institution.
 
-### Professores
+## Classes (Turmas)
 
-- `POST /api/createTeacher`: Cria um novo professor.
-- `GET /api/readTeacher/{id}`: Retorna os detalhes de um professor.
-- `PUT /api/updateTeacher/{id}`: Atualiza as informações de um professor.
-- `DELETE /api/deleteTeacher/{id}`: Remove um professor.
+- `GET /getStudentClass/{turmaId}`: Get all students in a specific class.
+- `POST /createClass`: Create a new class.
+- `GET /createClass/{id}`: Get details of a specific class.
+- `PUT /updateClass/{id}`: Update information of a specific class.
+- `DELETE /deleteClass/{id}`: Delete a specific class.
+
+## Authentication
+
+- `GET /user`: Get authenticated user details (requires authentication).
 
 ## Configuração
 
