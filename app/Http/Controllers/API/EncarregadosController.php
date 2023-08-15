@@ -9,11 +9,14 @@ use App\Models\Instituicao;
 
 class EncarregadosController extends Controller
 {
-    public function getAllIncharge(){
-        $encarregado= Encarregado::all();
+
+
+    public function getAllIncharge()
+    {
+        $inCharge = Encarregado::all();
         return response()->json([
-            'status'=> 200,
-            'Encarregado'=>$encarregado,
+            'status' => 200,
+            'Encarregados' => $inCharge,
         ]);
     }
 
@@ -27,21 +30,21 @@ class EncarregadosController extends Controller
             'senha' => 'required', // Certifique-se de que 'encarregado' é um número inteiro ou nulo
         ]);
 
-        
 
-        $encarregado = new Encarregado;
-        $encarregado->nome = $request->input('nome');
-        $encarregado->parentesco = $request->input('parentesco');
-        $encarregado->telefone = $request->input('telefone');
-        $encarregado->email = $request->input('email');
-        $encarregado->senha = password_hash($request->input('senha'), PASSWORD_DEFAULT);
-        $encarregado->save();
-        
+
+        $inCharge = new Encarregado;
+        $inCharge->nome = $request->input('nome');
+        $inCharge->parentesco = $request->input('parentesco');
+        $inCharge->telefone = $request->input('telefone');
+        $inCharge->email = $request->input('email');
+        $inCharge->senha = password_hash($request->input('senha'), PASSWORD_DEFAULT);
+        $inCharge->save();
+
 
         return response()->json([
             'status' => 200,
             'message' => 'Encarregado adicionado com sucesso',
-            'encarregado' => $encarregado,
+            'inCharge' => $inCharge,
         ]);
     }
 
@@ -50,7 +53,7 @@ class EncarregadosController extends Controller
         $encarregado = Encarregado::find($id);
         return response()->json([
             'status' => 200,
-            'encarregado' => $encarregado,
+            'inCharge' => $encarregado,
         ]);
     }
 
@@ -87,7 +90,7 @@ class EncarregadosController extends Controller
 
         return response()->json([
             'status' => 200,
-            'message' => 'encarregado Deleted succefully',
+            'message' => 'inCharge Deleted succefully',
         ]);
     }
 

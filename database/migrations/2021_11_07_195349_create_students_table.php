@@ -30,7 +30,7 @@ return new class extends Migration
          
             // Chaves estrangeiras
             $table->foreign('idInstituicao')->references('idInstituicao')->on('instituicoes');
-            $table->foreign('idTurma')->references('idTurma')->on('turmas');
+            $table->foreign('idTurma')->references('id')->on('turmas');
             $table->foreign('idEncarregado')->references('idEncarregado')->on('encarregados');
         });
     }

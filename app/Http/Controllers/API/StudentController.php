@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Encarregado;
 use App\Models\Instituicao;
+use App\Models\Turma;
 
 class StudentController extends Controller
 {
@@ -34,6 +35,21 @@ class StudentController extends Controller
 
         // Retornar os estudantes como uma resposta JSON
         return response()->json(['estudantes' => $student]);
+    }
+
+
+    // Obter todos os alunos de uma turma
+    public function getStudentClass($turmaId)
+    {
+        $turma = Turma::find($turmaId);
+
+        if (!$turma) {
+            return response()->json(['error' => 'Turma não encontrada'], 404);
+        }
+
+        $alunos = $turma->alunos;
+
+        return response()->json(['students' => $alunos]);
     }
 
 
@@ -112,7 +128,6 @@ class StudentController extends Controller
     }
 
     //Ver os dados de um determinado aluno
-
     public function read($id)
     {
         $student = Student::find($id);
@@ -123,7 +138,6 @@ class StudentController extends Controller
     }
 
     //Actualizar student
-
     public function update(Request $request, $id)
     {
         $student = Student::find($id);

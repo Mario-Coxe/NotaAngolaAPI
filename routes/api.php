@@ -6,12 +6,13 @@ use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\API\InstituicaoController;
 use App\Http\Controllers\API\EncarregadosController;
 use App\Http\Controllers\API\ProfessoresController;
+use App\Http\Controllers\API\TurmaController;
 
 //Studantes
-Route::get('/studentInstitution/{id}', [StudentController::class, 'getAllStudentsInstitution']);
+Route::get('/studentInstitution/{instituicaoId}', [StudentController::class, 'getAllStudentsInstitution']); //estudantes de uma determinada  instituicao
 
 
-Route::get('/studentIncharge/{id}', [StudentController::class, 'getStudentIncharge']);
+Route::get('/studentIncharge/{studentId}', [StudentController::class, 'getStudentIncharge']); //encarregado do student
 Route::post('/createStudent', [StudentController::class, 'create']);
 Route::get('/readStudent/{id}', [StudentController::class, 'read']);
 Route::put('/updateStudent/{id}', [StudentController::class, 'update']);
@@ -24,8 +25,10 @@ Route::put('/updateInstitution/{id}', [InstituicaoController::class, 'update']);
 Route::delete('/deleteInstitution/{id}', [InstituicaoController::class, 'delete']);
 
 //Encarregados
-Route::get('/getAllIncharge', [EncarregadosController::class, 'getAllIncharge']);
 Route::post('/createIncharge', [EncarregadosController::class, 'create']);
+Route::get('/readIncharge/{id}', [EncarregadosController::class, 'read']);
+Route::put('/updateIncharge/{id}', [EncarregadosController::class, 'update']);
+Route::delete('/deleteIncharge/{id}', [EncarregadosController::class, 'delete']);
 
 
 
@@ -33,6 +36,7 @@ Route::post('/createIncharge', [EncarregadosController::class, 'create']);
 Route::get('/getAllInstitution', [InstituicaoController::class, 'getAllInstitution']);
 Route::get('/getAllStudents', [StudentController::class, 'getAllStudents']);
 Route::get('/getAllTeachers', [InstituicaoController::class, 'getAllTeachers']);
+Route::get('/getAllIncharge', [EncarregadosController::class, 'getAllIncharge']);
 
 
 
@@ -41,6 +45,15 @@ Route::post('/createTeacher', [ProfessoresController::class, 'create']);
 Route::get('/readTeacher/{id}', [ProfessoresController::class, 'read']);
 Route::put('/updateTeacher/{id}', [ProfessoresController::class, 'update']);
 Route::delete('/deleteTeacher/{id}', [ProfessoresController::class, 'delete']);
+Route::post('/teacherInstitution/{professorId}', [ProfessoresController::class, 'teacherInstitution']); //Adicioner o professor em uma Instituição
+
+//Turma
+Route::get('/getStudentClass/{turmaId}', [StudentController::class, 'getStudentClass']);//traz todos os alunos de uma determinada turma
+Route::post('/createClass', [TurmaController::class, 'create']);
+Route::get('/createClass/{id}', [TurmaController::class, 'read']);
+Route::put('/updateClass/{id}', [TurmaController::class, 'update']);
+Route::delete('/deleteClass/{id}', [TurmaController::class, 'delete']);
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

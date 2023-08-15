@@ -5,13 +5,47 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Professor;
+use App\Models\Instituicao;
 
 class ProfessoresController extends Controller
 {
- 
+
+    //Adicionar o professor em uma INSTITUICAO
+    public function teacherInstitution(Request $request, $professorId)
+    {
+        $teacher = Professor::find($professorId);
+
+        if (!$teacher) {
+            return response()->json(['error' => 'Professor não encontrado'], 404);
+        }
+
+        $instituicaoId = $request->input('instituicao_id');
+        $institution = Instituicao::find($instituicaoId);
+
+        if (!$institution) {
+            return response()->json(['error' => 'Instituição não encontrada'], 404);
+        }
+
+        // Verificar se o professor já está vinculado à instituição
+        if ($teacher->instituicoes->contains($instituicaoId)) {
+            return response()->json(['error' => 'Professor já está vinculado a esta instituição'], 400);
+        }
+
+        // Vincular o professor à instituição usando a tabela pivot 'professor_instituicao'
+        $teacher->instituicoes()->attach($instituicaoId);
+
+        return response()->json([
+            'message' => 'Instituição adicionada ao professor com sucesso',
+            'teacherName' => $teacher->nome,
+            'instituicionName' => $institution->nome,
+        ]);
+    }
+
+
+
 
     // Criar professor
-    public function  create(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'nome' => 'required|string',
@@ -20,26 +54,26 @@ class ProfessoresController extends Controller
             'senha' => 'required|string',
         ]);
 
-        $professor = new Professor;
-        $professor->nome = $request->input('nome');
-        $professor->telefone = $request->input('telefone');
-        $professor->email = $request->input('email');
-        $professor->senha = bcrypt($request->input('senha'));
-        $professor->save();
+        $teacher = new Professor;
+        $teacher->nome = $request->input('nome');
+        $teacher->telefone = $request->input('telefone');
+        $teacher->email = $request->input('email');
+        $teacher->senha = bcrypt($request->input('senha'));
+        $teacher->save();
 
         return response()->json([
             'status' => 200,
             'message' => 'Professor adicionado com sucesso',
-            'professor' => $professor,
+            'teacher' => $teacher,
         ]);
     }
 
     // Ver dados de um professor
     public function read($id)
     {
-        $professor = Professor::find($id);
-        
-        if (!$professor) {
+        $teacher = Professor::find($id);
+
+        if (!$teacher) {
             return response()->json([
                 'status' => 404,
                 'message' => 'Professor não encontrado',
@@ -48,16 +82,16 @@ class ProfessoresController extends Controller
 
         return response()->json([
             'status' => 200,
-            'professor' => $professor,
+            'teacher' => $teacher,
         ]);
     }
 
     // Atualizar professor
     public function update(Request $request, $id)
     {
-        $professor = Professor::find($id);
+        $teacher = Professor::find($id);
 
-        if (!$professor) {
+        if (!$teacher) {
             return response()->json([
                 'status' => 404,
                 'message' => 'Professor não encontrado',
@@ -71,19 +105,19 @@ class ProfessoresController extends Controller
             'senha' => 'required|string',
         ]);
 
-        $professor->nome = $request->input('nome');
-        $professor->telefone = $request->input('telefone');
-        $professor->email = $request->input('email');
-        $professor->senha = bcrypt($request->input('senha'));
-        $professor->save();
+        $teacher->nome = $request->input('nome');
+        $teacher->telefone = $request->input('telefone');
+        $teacher->email = $request->input('email');
+        $teacher->senha = bcrypt($request->input('senha'));
+        $teacher->save();
 
         // Recarrega os dados atualizados do professor após salvar
-        $updatedProfessor = Professor::find($id);
+        $updatedTeacher = Professor::find($id);
 
         return response()->json([
             'status' => 200,
             'message' => 'Professor modificado com sucesso',
-            'professor' => $updatedProfessor,
+            'teacher' => $updatedTeacher,
         ]);
     }
 
@@ -91,7 +125,7 @@ class ProfessoresController extends Controller
     public function delete($id)
     {
         $professor = Professor::find($id);
-        
+
         if (!$professor) {
             return response()->json([
                 'status' => 404,

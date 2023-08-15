@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id('idProfessor');
             $table->string('nome');
             $table->string('telefone');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('senha');
             $table->timestamps();
         });

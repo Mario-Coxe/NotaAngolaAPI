@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('instituicoes', function (Blueprint $table) {
             $table->id('idInstituicao'); // Tornar o campo 'idInstituicao' auto incremento e primary key
+            $table->bigInteger('idEncarregado')->unsigned()->nullable();
             $table->string('nome', 150);
-            $table->string('localizacao', 200);
-            $table->string('telefone', 50)->unique(); // Definir 'telefone' como UNIQUE
-            $table->string('email', 100)->unique(); // Definir 'email' como UNIQUE
-            $table->bigInteger('encarregado')->unsigned()->nullable();
-            $table->string('status', 10)->default('Activa');
+            $table->string('localizacao', 200)->unique();;
+            $table->string('telefone', 50); // Definir 'telefone' como UNIQUE
+            $table->string('email', 100); // Definir 'email' como UNIQUE
+            $table->string('status', 1)->default('1');
 
             // Adicione a chave estrangeira
-            $table->foreign('encarregado')->references('idEncarregado')->on('encarregados');
-            
+            $table->foreign('idEncarregado')->references('idEncarregado')->on('encarregados');
             $table->timestamps();
         });
     }

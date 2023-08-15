@@ -349,8 +349,8 @@ class ComposerStaticInit7ac0d325aac758d6e5b92f7d4cc46039
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -514,6 +514,10 @@ class ComposerStaticInit7ac0d325aac758d6e5b92f7d4cc46039
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\API\\EncarregadosController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/EncarregadosController.php',
+        'App\\Http\\Controllers\\API\\InstituicaoController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/InstituicaoController.php',
+        'App\\Http\\Controllers\\API\\ProfessoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/ProfessoresController.php',
+        'App\\Http\\Controllers\\API\\StudentController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/StudentController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -525,6 +529,11 @@ class ComposerStaticInit7ac0d325aac758d6e5b92f7d4cc46039
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Models\\Encarregado' => __DIR__ . '/../..' . '/app/Models/Encarregado.php',
+        'App\\Models\\Instituicao' => __DIR__ . '/../..' . '/app/Models/Instituicao.php',
+        'App\\Models\\Professor' => __DIR__ . '/../..' . '/app/Models/Professor.php',
+        'App\\Models\\Student' => __DIR__ . '/../..' . '/app/Models/Student.php',
+        'App\\Models\\Turma' => __DIR__ . '/../..' . '/app/Models/Turma.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

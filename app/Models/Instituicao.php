@@ -18,7 +18,7 @@ class Instituicao extends Model
         'localizacao',
         'telefone',
         'email',
-        'encarregado',
+        'idEncarregado',
         'status',
     ];
 
