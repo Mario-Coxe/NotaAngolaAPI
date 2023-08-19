@@ -6,75 +6,61 @@ Este repositório contém o código-fonte de um aplicativo mobile multitenancy d
 
 This document provides an overview of the available endpoints in the API and their functionalities.
 
-## Students
+### Estudantes
 
-- `GET /studentInstitution/{instituicaoId}`: Get all students from a specific institution.
-- `GET /studentIncharge/{studentId}`: Get the guardian of a specific student.
-- `POST /createStudent`: Create a new student.
-- `GET /readStudent/{id}`: Get details of a specific student.
-- `PUT /updateStudent/{id}`: Update information of a specific student.
-- `DELETE /deleteStudent/{id}`: Delete a specific student.
+- `GET /studentInstitution/{instituicaoId}`: Obter todos os estudantes de uma instituição específica.
+- `GET /studentIncharge/{studentId}`: Obter o encarregado de um estudante específico.
+- `POST /createStudent`: Criar um novo estudante.
+- `GET /readStudent/{id}`: Obter detalhes de um estudante específico.
+- `PUT /updateStudent/{id}`: Atualizar informações de um estudante específico.
+- `DELETE /deleteStudent/{id}`: Excluir um estudante específico.
 
-## Institutions
+### Instituições
 
-- `POST /createInstitution`: Create a new institution.
-- `GET /readInstitution/{id}`: Get details of a specific institution.
-- `PUT /updateInstitution/{id}`: Update information of a specific institution.
-- `DELETE /deleteInstitution/{id}`: Delete a specific institution.
-- `GET /getAllInstitution`: Get details of all institutions.
-- `GET /getAllTeachers`: Get details of all teachers in institutions.
+- `POST /createInstitution`: Criar uma nova instituição.
+- `GET /readInstitution/{id}`: Obter detalhes de uma instituição específica.
+- `PUT /updateInstitution/{id}`: Atualizar informações de uma instituição específica.
+- `DELETE /deleteInstitution/{id}`: Excluir uma instituição específica.
+- `GET /getAllInstitution`: Obter detalhes de todas as instituições.
+- `GET /getAllTeachers`: Obter detalhes de todos os professores em instituições.
 
-## Guardians (Encarregados)
+### Encarregados
 
-- `POST /createIncharge`: Create a new guardian.
-- `GET /readIncharge/{id}`: Get details of a specific guardian.
-- `PUT /updateIncharge/{id}`: Update information of a specific guardian.
-- `DELETE /deleteIncharge/{id}`: Delete a specific guardian.
-- `GET /getAllIncharge`: Get details of all guardians.
+- `POST /createIncharge`: Criar um novo encarregado.
+- `GET /readIncharge/{id}`: Obter detalhes de um encarregado específico.
+- `PUT /updateIncharge/{id}`: Atualizar informações de um encarregado específico.
+- `DELETE /deleteIncharge/{id}`: Excluir um encarregado específico.
+- `GET /getAllIncharge`: Obter detalhes de todos os encarregados.
 
-## Teachers (Professores)
+### Professores
 
-- `POST /createTeacher`: Create a new teacher.
-- `GET /readTeacher/{id}`: Get details of a specific teacher.
-- `PUT /updateTeacher/{id}`: Update information of a specific teacher.
-- `DELETE /deleteTeacher/{id}`: Delete a specific teacher.
-- `POST /teacherInstitution/{professorId}`: Add a teacher to an institution.
+- `POST /createTeacher`: Criar um novo professor.
+- `GET /readTeacher/{id}`: Obter detalhes de um professor específico.
+- `PUT /updateTeacher/{id}`: Atualizar informações de um professor específico.
+- `DELETE /deleteTeacher/{id}`: Excluir um professor específico.
+- `POST /teacherInstitution/{professorId}`: Adicionar um professor a uma instituição.
 
-## Classes (Turmas)
+### Classes (Turmas)
 
-- `GET /getStudentClass/{turmaId}`: Get all students in a specific class.
-- `POST /createClass`: Create a new class.
-- `GET /createClass/{id}`: Get details of a specific class.
-- `PUT /updateClass/{id}`: Update information of a specific class.
-- `DELETE /deleteClass/{id}`: Delete a specific class.
+- `GET /getStudentClass/{turmaId}`: Obter todos os alunos de uma determinada turma.
+- `POST /createClass`: Criar uma nova turma.
+- `GET /readClass/{id}`: Obter detalhes de uma turma específica.
+- `PUT /updateClass/{id}`: Atualizar informações de uma turma específica.
+- `DELETE /deleteClass/{id}`: Excluir uma turma específica.
 
-## Authentication
+### Disciplinas
 
-- `GET /user`: Get authenticated user details (requires authentication).
+- `POST /createSubject`: Criar uma nova disciplina.
+- `GET /readSubject/{id}`: Obter detalhes de uma disciplina específica.
+- `PUT /updateSubject/{id}`: Atualizar informações de uma disciplina específica.
+- `DELETE /deleteSubject/{id}`: Excluir uma disciplina específica.
+- `GET /subjects/{instituicaoId}`: Obter disciplinas por instituição.
 
-## Configuração
+### Notas
 
-Para configurar e executar este projeto localmente, siga estas etapas:
+- `POST /createGrade`: Criar uma nova nota.
+- `GET /readGrade/{id}`: Obter detalhes de uma nota específica.
+- `PUT /updateGrade/{id}`: Atualizar informações de uma nota específica.
+- `DELETE /deleteGrade/{id}`: Excluir uma nota específica.
 
-1. Clone este repositório: `git clone https://github.com/seu-usuario/seu-repositorio.git`
-2. Instale as dependências do Laravel: `composer install`
-3. Instale as dependências do React Native: `npm install`
-4. Configure o ambiente e o banco de dados no arquivo `.env`
-5. Execute as migrações do banco de dados: `php artisan migrate`
-6. Inicie o servidor Laravel: `php artisan serve`
-7. Inicie o servidor React Native: `npm start`
 
-## Contribuição
-
-Contribuições são bem-vindas! Se você quiser contribuir para este projeto, siga estas etapas:
-
-1. Faça um fork deste repositório.
-2. Crie uma branch para a sua feature ou correção: `git checkout -b minha-feature`
-3. Faça as alterações desejadas.
-4. Commit suas alterações: `git commit -m 'Minha nova feature'`
-5. Faça o push para a branch: `git push origin minha-feature`
-6. Crie um novo Pull Request.
-
-## Licença
-
-Este projeto está sob a licença XYZ. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
