@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "7380257e-8700-4787-8080-9695babecced",
+		"_postman_id": "fb148813-bb36-4451-94b4-488533478034",
 		"name": "NotasOnline",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "26966977"
+		"_exporter_id": "26966977",
+		"_collection_link": "https://gold-capsule-61885.postman.co/workspace/My-Workspace~64a17f90-f3a9-446f-8a5a-43ac0232001b/collection/26966977-fb148813-bb36-4451-94b4-488533478034?action=share&source=collection_link&creator=26966977"
 	},
 	"item": [
 		{
@@ -11,204 +12,722 @@
 			"item": [
 				{
 					"name": "Turma",
-					"item": []
-				},
-				{
-					"name": "createStudent",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
+					"item": [
+						{
+							"name": "createStudent",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Marcos\",\n  \"email\": \"aluno@example.com\",\n  \"dataNascimento\": \"2005-07-31\",\n  \"genero\": \"Masculino\",\n  \"BI\": \"12345w6710ww11w1\",\n  \"morada\": \"Rua do Aluno, 123\",\n  \"idInstituicao\": 3,\n  \"idTurma\": 2,\n  \"idEncarregado\": 2\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/createStudent",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"createStudent"
+									]
+								}
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Nome do Aluno\",\n  \"course\": \"Nome do Curso\",\n  \"email\": \"aluno@example.com\",\n  \"dataNascimento\": \"2005-07-31\",\n  \"genero\": \"Masculino\",\n  \"BI\": \"123456789\",\n  \"morada\": \"Rua do Aluno, 123\",\n  \"idInstituicao\": 1,\n  \"idTurma\": 1,\n  \"encarregado\": 1\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"response": []
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/createStudent",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"createStudent"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getAllStudents",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/getAllStudents",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"getAllStudents"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateStudent",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "7|kNZE7W2h4bJwi7YJ3ALMxq1xx1quh6EIrxVvMNwQ",
-									"type": "string"
+						{
+							"name": "createGrade",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"alunoId\": 1,\n    \"disciplinaId\": 2,\n    \"trimestre\": 1,\n    \"mac\": \"\",\n    \"pp\": \"\",\n    \"pt\": \"\",\n    \"mt\": \"\",\n    \"faltas\": 0,\n    \"mt1\": \"\",\n    \"mt2\": \"\",\n    \"mt3\": \"\",\n    \"mfd\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/createGrade",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"createGrade"
+									]
 								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Coxe\",\n  \"email\": \"aluno@example.com\",\n  \"dataNascimento\": \"2005-07-31\",\n  \"genero\": \"Masculino\",\n  \"BI\": \"123456789\",\n  \"morada\": \"Rua do Aluno, 123\",\n  \"idInstituicao\": 1,\n  \"idTurma\": 1,\n  \"encarregado\": 1\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
+							"response": []
+						},
+						{
+							"name": "createClass",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Turma C\",\n    \"professorId\": 1,\n    \"instituicaoId\": 1\n}\n\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/createClass",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"createClass"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/updateStudent/1",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"updateStudent",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "readStudent",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/readStudent/1",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"readStudent",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteStudent",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "1|NL7xkaXw3RhGexAUrnr4BZo1xOuFmQuhHGP2ej0k",
-									"type": "string"
-								}
-							]
+							"response": []
 						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/deleteStudent/1",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"deleteStudent",
-								"1"
-							]
+						{
+							"name": "teacherInstitution",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"instituicao_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/teacherInstitution/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"teacherInstitution",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createTeacher",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Marcos\",\n  \"email\": \"teac1hwer11@exasmple.com\",\n  \"telefone\": \"991111222\",\n  \"senha\": \"Masculino\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/createTeacher",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"createTeacher"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllStudents",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/getAllStudents",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"getAllStudents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getDisciplinasByInstituicao",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8001/api/subjects/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"subjects",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllTeacher",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/4/student",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"4",
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "readGrade",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/readGrade/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"readGrade",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateStudent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "7|kNZE7W2h4bJwi7YJ3ALMxq1xx1quh6EIrxVvMNwQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Coxe\",\n  \"email\": \"aluno@example.com\",\n  \"dataNascimento\": \"2005-07-31\",\n  \"genero\": \"Masculino\",\n  \"BI\": \"123456789\",\n  \"morada\": \"Rua do Aluno, 123\",\n  \"idInstituicao\": 1,\n  \"idTurma\": 1,\n  \"encarregado\": 1\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/updateStudent/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"updateStudent",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateGrade",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "7|kNZE7W2h4bJwi7YJ3ALMxq1xx1quh6EIrxVvMNwQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"alunoId\": 1,\n    \"disciplinaId\": 1,\n    \"trimestre\": 1,\n    \"mac\": \"17\",\n    \"pp\": \"20\",\n    \"pt\": \"\",\n    \"mt\": \"\",\n    \"faltas\": 1\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/updateGrade/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"updateGrade",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateTeacher",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "7|kNZE7W2h4bJwi7YJ3ALMxq1xx1quh6EIrxVvMNwQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Coxe\",\n  \"email\": \"aluno@example.com\",\n  \"dataNascimento\": \"2005-07-31\",\n  \"genero\": \"Masculino\",\n  \"BI\": \"123456789\",\n  \"morada\": \"Rua do Aluno, 123\",\n  \"idInstituicao\": 1,\n  \"idTurma\": 1,\n  \"encarregado\": 1\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/updateStudent/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"updateStudent",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "readStudent",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/readStudent/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"readStudent",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "readTeacher",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/readStudent/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"readStudent",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getStudentClass",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/getStudentClass/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"getStudentClass",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "studentIncharge",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/studentIncharge/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"studentIncharge",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteStudent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|NL7xkaXw3RhGexAUrnr4BZo1xOuFmQuhHGP2ej0k",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/deleteStudent/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"deleteStudent",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteTeacher",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "1|NL7xkaXw3RhGexAUrnr4BZo1xOuFmQuhHGP2ej0k",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/deleteStudent/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"deleteStudent",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -236,7 +755,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Nome da Instituição\",\n  \"localizacao\": \"Localização da Instituição\",\n  \"telefone\": \"123456789\",\n  \"email\": \"instituicao@example.com\",\n  \"encarregado\": 1, // ID do encarregado (opcional)\n  \"status\": \"Activa\"\n}\n",
+							"raw": "{\n  \"nome\": \"Astros 1201\",\n  \"localizacao\": \"Localização da Instituição2\",\n  \"telefone\": \"123456q781\",\n  \"email\": \"astroq21s@example.com\",\n  \"idEncarregado\":4, \n  \"status\": \"1\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,6 +798,30 @@
 							"path": [
 								"api",
 								"getAllInstitution"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "studentInstitution",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/studentInstitution/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"studentInstitution",
+								"3"
 							]
 						}
 					},
@@ -357,6 +900,147 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "createIncharge",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Nome do Encarregado\",\n  \"parentesco\": \"Outro\",\n  \"telefone\": \"123456789\",\n  \"email\": \"institui1cao@example.com\",\n  \"senha\": 1234567189\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/createIncharge",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"createIncharge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "gelAllIncharge",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/getAllInstitution",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"getAllInstitution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateIncharge",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/updateInstitution/{id}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"updateInstitution",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readIncharge",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/readInstitution/{id}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"readInstitution",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteIncharge",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/deleteInstitution/{id}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"deleteInstitution",
+						"{id}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
