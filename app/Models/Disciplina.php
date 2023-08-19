@@ -19,4 +19,9 @@ class Disciplina extends Model
     {
         return $this->belongsTo(Instituicao::class, 'instituicaoId', 'idInstituicao');
     }
+
+    public function notas()
+    {
+        return $this->hasMany(Nota::class, 'disciplinaId', 'id');
+    }
 }

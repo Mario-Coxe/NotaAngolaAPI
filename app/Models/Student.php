@@ -44,4 +44,11 @@ class Student extends Model
         return $this->hasMany(Student::class, 'idInstituicao');
     }
 
+    public function notas()
+    {
+        return $this->hasMany(Nota::class, 'alunoId', 'idAluno');
+    }
+
+    
+
 }

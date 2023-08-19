@@ -14,7 +14,7 @@ class DisciplinaController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:100|unique:disciplinas',
-            'idInstituicao' => 'required|integer',
+            'instituicaoId' => 'required|integer',
         ]);
 
         // Verifica se a instituição existe
@@ -30,6 +30,25 @@ class DisciplinaController extends Controller
             'subjects' => $disciplina,
         ]);
     }
+
+
+    // Obter disciplinas de uma instituição
+    public function getDisciplinasByInstituicao($instituicaoId)
+    {
+        // Verifica se a instituição existe
+        $instituicaoExists = Instituicao::where('idInstituicao', $instituicaoId)->exists();
+        if (!$instituicaoExists) {
+            return response()->json(['message' => 'Instituição não encontrada'], 404);
+        }
+
+        // Obter disciplinas da instituição
+        $disciplinas = Disciplina::where('instituicaoId', $instituicaoId)->get();
+
+        return response()->json([
+            'subjects' => $disciplinas,
+        ]);
+    }
+
 
     // Obter detalhes de uma disciplina
     public function read($id)

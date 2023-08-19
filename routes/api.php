@@ -7,6 +7,8 @@ use App\Http\Controllers\API\InstituicaoController;
 use App\Http\Controllers\API\EncarregadosController;
 use App\Http\Controllers\API\ProfessoresController;
 use App\Http\Controllers\API\TurmaController;
+use App\Http\Controllers\API\DisciplinaController;
+use App\Http\Controllers\API\NotaController;
 
 //Studantes
 Route::get('/studentInstitution/{instituicaoId}', [StudentController::class, 'getAllStudentsInstitution']); //estudantes de uma determinada  instituicao
@@ -50,9 +52,26 @@ Route::post('/teacherInstitution/{professorId}', [ProfessoresController::class, 
 //Turma
 Route::get('/getStudentClass/{turmaId}', [StudentController::class, 'getStudentClass']);//traz todos os alunos de uma determinada turma
 Route::post('/createClass', [TurmaController::class, 'create']);
-Route::get('/createClass/{id}', [TurmaController::class, 'read']);
+Route::get('/readClass/{id}', [TurmaController::class, 'read']);
 Route::put('/updateClass/{id}', [TurmaController::class, 'update']);
 Route::delete('/deleteClass/{id}', [TurmaController::class, 'delete']);
+
+
+//Disciplina
+Route::post('/createSubject', [DisciplinaController::class, 'create']);
+Route::get('/readSubject/{id}', [DisciplinaController::class, 'read']);
+Route::put('/updateSubject/{id}', [DisciplinaController::class, 'update']);
+Route::delete('/deleteSubject/{id}', [DisciplinaController::class, 'delete']);
+
+// Rota para obter disciplinas por instituição
+Route::get('/subjects/{instituicaoId}', [DisciplinaController::class, 'getDisciplinasByInstituicao']);
+
+
+//Notas
+Route::post('/createGrade', [NotaController::class, 'create']);
+Route::get('/readGrade/{id}', [NotaController::class, 'read']);
+Route::put('/updateGrade/{id}', [NotaController::class, 'update']);
+Route::delete('/deleteGrade/{id}', [NotaController::class, 'delete']);
 
 
 
