@@ -63,4 +63,5 @@ This document provides an overview of the available endpoints in the API and the
 - `PUT /updateGrade/{id}`: Atualizar informações de uma nota específica.
 - `DELETE /deleteGrade/{id}`: Excluir uma nota específica.
 
-
+## CRIAR CONTROLLER PARA O ADMIN
+- php artisan admin:make InstituicaoControllerAdmin --model=App\\Models\\Instituicao
