@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Routing\Router;
+use App\Admin\Controllers\InstituicaoControllerAdmin;
+use App\Admin\Controllers\EncarregadosControllerAdmin;
 
 Admin::routes();
 
@@ -12,5 +14,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
+    $router->resource('instituicaos', InstituicaoControllerAdmin::class);
+    $router->resource('encarregados', EncarregadosControllerAdmin::class);
 
 });
