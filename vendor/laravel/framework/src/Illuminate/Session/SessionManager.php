@@ -4,16 +4,13 @@ namespace Illuminate\Session;
 
 use Illuminate\Support\Manager;
 
-/**
- * @mixin \Illuminate\Session\Store
- */
 class SessionManager extends Manager
 {
     /**
      * Call a custom driver creator.
      *
      * @param  string  $driver
-     * @return \Illuminate\Session\Store
+     * @return mixed
      */
     protected function callCustomCreator($driver)
     {
@@ -50,9 +47,7 @@ class SessionManager extends Manager
     protected function createCookieDriver()
     {
         return $this->buildSession(new CookieSessionHandler(
-            $this->container->make('cookie'),
-            $this->config->get('session.lifetime'),
-            $this->config->get('session.expire_on_close')
+            $this->container->make('cookie'), $this->config->get('session.lifetime')
         ));
     }
 

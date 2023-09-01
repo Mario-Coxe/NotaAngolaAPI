@@ -2,20 +2,13 @@
 
 namespace Illuminate\Database;
 
-use Illuminate\Contracts\Database\Query\Expression;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Traits\Macroable;
 use RuntimeException;
 
 abstract class Grammar
 {
     use Macroable;
-
-    /**
-     * The connection used for escaping values.
-     *
-     * @var \Illuminate\Database\Connection
-     */
-    protected $connection;
 
     /**
      * The grammar table prefix.
@@ -38,7 +31,7 @@ abstract class Grammar
     /**
      * Wrap a table in keyword identifiers.
      *
-     * @param  \Illuminate\Contracts\Database\Query\Expression|string  $table
+     * @param  \Illuminate\Database\Query\Expression|string  $table
      * @return string
      */
     public function wrapTable($table)
@@ -53,7 +46,7 @@ abstract class Grammar
     /**
      * Wrap a value in keyword identifiers.
      *
-     * @param  \Illuminate\Contracts\Database\Query\Expression|string  $value
+     * @param  \Illuminate\Database\Query\Expression|string  $value
      * @param  bool  $prefixAlias
      * @return string
      */
@@ -204,22 +197,6 @@ abstract class Grammar
     }
 
     /**
-     * Escapes a value for safe SQL embedding.
-     *
-     * @param  string|float|int|bool|null  $value
-     * @param  bool  $binary
-     * @return string
-     */
-    public function escape($value, $binary = false)
-    {
-        if (is_null($this->connection)) {
-            throw new RuntimeException("The database driver's grammar implementation does not support escaping values.");
-        }
-
-        return $this->connection->escape($value, $binary);
-    }
-
-    /**
      * Determine if the given value is a raw expression.
      *
      * @param  mixed  $value
@@ -231,18 +208,14 @@ abstract class Grammar
     }
 
     /**
-     * Transforms expressions to their scalar types.
+     * Get the value of a raw expression.
      *
-     * @param  \Illuminate\Contracts\Database\Query\Expression|string|int|float  $expression
-     * @return string|int|float
+     * @param  \Illuminate\Database\Query\Expression  $expression
+     * @return mixed
      */
     public function getValue($expression)
     {
-        if ($this->isExpression($expression)) {
-            return $this->getValue($expression->getValue($this));
-        }
-
-        return $expression;
+        return $expression->getValue();
     }
 
     /**
@@ -274,19 +247,6 @@ abstract class Grammar
     public function setTablePrefix($prefix)
     {
         $this->tablePrefix = $prefix;
-
-        return $this;
-    }
-
-    /**
-     * Set the grammar's database connection.
-     *
-     * @param  \Illuminate\Database\Connection  $prefix
-     * @return $this
-     */
-    public function setConnection($connection)
-    {
-        $this->connection = $connection;
 
         return $this;
     }

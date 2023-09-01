@@ -53,7 +53,7 @@ class RateLimiter
      * Get the given named rate limiter.
      *
      * @param  string  $name
-     * @return \Closure|null
+     * @return \Closure
      */
     public function limiter(string $name)
     {
@@ -75,11 +75,7 @@ class RateLimiter
             return false;
         }
 
-        if (is_null($result = $callback())) {
-            $result = true;
-        }
-
-        return tap($result, function () use ($key, $decaySeconds) {
+        return tap($callback() ?: true, function () use ($key, $decaySeconds) {
             $this->hit($key, $decaySeconds);
         });
     }

@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-6.2
----
-
- * Add `Requirement::POSITIVE_INT` for common ids and pagination
-
 6.1
 ---
 

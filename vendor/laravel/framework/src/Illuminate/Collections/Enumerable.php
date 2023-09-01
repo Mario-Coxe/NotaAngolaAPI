@@ -12,8 +12,7 @@ use Traversable;
 
 /**
  * @template TKey of array-key
- *
- * @template-covariant TValue
+ * @template TValue
  *
  * @extends \Illuminate\Contracts\Support\Arrayable<TKey, TValue>
  * @extends \IteratorAggregate<TKey, TValue>
@@ -52,10 +51,11 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Wrap the given value in a collection if applicable.
      *
+     * @template TWrapKey of array-key
      * @template TWrapValue
      *
-     * @param  iterable<array-key, TWrapValue>|TWrapValue  $value
-     * @return static<array-key, TWrapValue>
+     * @param  iterable<TWrapKey, TWrapValue>  $value
+     * @return static<TWrapKey, TWrapValue>
      */
     public static function wrap($value);
 
@@ -550,7 +550,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Concatenate values of a given key as a string.
      *
-     * @param  callable|string  $value
+     * @param  string  $value
      * @param  string|null  $glue
      * @return string
      */
@@ -680,11 +680,8 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Map a collection and flatten the result by a single level.
      *
-     * @template TFlatMapKey of array-key
-     * @template TFlatMapValue
-     *
-     * @param  callable(TValue, TKey): (\Illuminate\Support\Collection<TFlatMapKey, TFlatMapValue>|array<TFlatMapKey, TFlatMapValue>)  $callback
-     * @return static<TFlatMapKey, TFlatMapValue>
+     * @param  callable(TValue, TKey): mixed  $callback
+     * @return static<int, mixed>
      */
     public function flatMap(callable $callback);
 
@@ -722,7 +719,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
      * @template TCombineValue
      *
      * @param  \Illuminate\Contracts\Support\Arrayable<array-key, TCombineValue>|iterable<array-key, TCombineValue>  $values
-     * @return static<TValue, TCombineValue>
+     * @return static<TKey, TCombineValue>
      */
     public function combine($values);
 
@@ -1079,10 +1076,8 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Pass the collection into a new class.
      *
-     * @template TPipeIntoValue
-     *
-     * @param  class-string<TPipeIntoValue>  $class
-     * @return TPipeIntoValue
+     * @param  class-string  $class
+     * @return mixed
      */
     public function pipeInto($class);
 
@@ -1106,7 +1101,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Create a collection of all elements that do not pass a given truth test.
      *
-     * @param  (callable(TValue, TKey): bool)|bool|TValue  $callback
+     * @param  (callable(TValue, TKey): bool)|bool  $callback
      * @return static
      */
     public function reject($callback = true);
@@ -1170,7 +1165,7 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     /**
      * Count the number of items in the collection by a field or using a callback.
      *
-     * @param  (callable(TValue, TKey): array-key)|string|null  $countBy
+     * @param  (callable(TValue, TKey): mixed)|string|null  $countBy
      * @return static<array-key, int>
      */
     public function countBy($countBy = null);

@@ -109,7 +109,7 @@ if (! function_exists('app')) {
      *
      * @param  string|null  $abstract
      * @param  array  $parameters
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|mixed
+     * @return mixed|\Illuminate\Contracts\Foundation\Application
      */
     function app($abstract = null, array $parameters = [])
     {
@@ -226,13 +226,15 @@ if (! function_exists('cache')) {
      *
      * If an array is passed, we'll assume you want to put to the cache.
      *
-     * @param  mixed  ...$arguments  key|key,default|data,expiration|null
+     * @param  dynamic  key|key,default|data,expiration|null
      * @return mixed|\Illuminate\Cache\CacheManager
      *
      * @throws \InvalidArgumentException
      */
-    function cache(...$arguments)
+    function cache()
     {
+        $arguments = func_get_args();
+
         if (empty($arguments)) {
             return app('cache');
         }
@@ -405,6 +407,22 @@ if (! function_exists('dispatch_sync')) {
     }
 }
 
+if (! function_exists('dispatch_now')) {
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+     *
+     * @param  mixed  $job
+     * @param  mixed  $handler
+     * @return mixed
+     *
+     * @deprecated Will be removed in a future Laravel version.
+     */
+    function dispatch_now($job, $handler = null)
+    {
+        return app(Dispatcher::class)->dispatchNow($job, $handler);
+    }
+}
+
 if (! function_exists('encrypt')) {
     /**
      * Encrypt the given value.
@@ -438,16 +456,12 @@ if (! function_exists('fake') && class_exists(\Faker\Factory::class)) {
     /**
      * Get a faker instance.
      *
-     * @param  string|null  $locale
+     * @param  ?string  $locale
      * @return \Faker\Generator
      */
     function fake($locale = null)
     {
-        if (app()->bound('config')) {
-            $locale ??= app('config')->get('app.faker_locale');
-        }
-
-        $locale ??= 'en_US';
+        $locale ??= app('config')->get('app.faker_locale') ?? 'en_US';
 
         $abstract = \Faker\Generator::class.':'.$locale;
 
@@ -610,7 +624,7 @@ if (! function_exists('precognitive')) {
         });
 
         if (request()->isPrecognitive()) {
-            abort(204, headers: ['Precognition-Success' => 'true']);
+            abort(204);
         }
 
         return $payload;
@@ -626,7 +640,7 @@ if (! function_exists('public_path')) {
      */
     function public_path($path = '')
     {
-        return app()->publicPath($path);
+        return app()->make('path.public').($path ? DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
     }
 }
 
@@ -664,38 +678,6 @@ if (! function_exists('report')) {
         }
 
         app(ExceptionHandler::class)->report($exception);
-    }
-}
-
-if (! function_exists('report_if')) {
-    /**
-     * Report an exception if the given condition is true.
-     *
-     * @param  bool  $boolean
-     * @param  \Throwable|string  $exception
-     * @return void
-     */
-    function report_if($boolean, $exception)
-    {
-        if ($boolean) {
-            report($exception);
-        }
-    }
-}
-
-if (! function_exists('report_unless')) {
-    /**
-     * Report an exception unless the given condition is true.
-     *
-     * @param  bool  $boolean
-     * @param  \Throwable|string  $exception
-     * @return void
-     */
-    function report_unless($boolean, $exception)
-    {
-        if (! $boolean) {
-            report($exception);
-        }
     }
 }
 
@@ -798,7 +780,7 @@ if (! function_exists('route')) {
     /**
      * Generate the URL to a named route.
      *
-     * @param  string  $name
+     * @param  array|string  $name
      * @param  mixed  $parameters
      * @param  bool  $absolute
      * @return string
@@ -982,10 +964,10 @@ if (! function_exists('validator')) {
      * @param  array  $data
      * @param  array  $rules
      * @param  array  $messages
-     * @param  array  $attributes
+     * @param  array  $customAttributes
      * @return \Illuminate\Contracts\Validation\Validator|\Illuminate\Contracts\Validation\Factory
      */
-    function validator(array $data = [], array $rules = [], array $messages = [], array $attributes = [])
+    function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
     {
         $factory = app(ValidationFactory::class);
 
@@ -993,7 +975,7 @@ if (! function_exists('validator')) {
             return $factory;
         }
 
-        return $factory->make($data, $rules, $messages, $attributes);
+        return $factory->make($data, $rules, $messages, $customAttributes);
     }
 }
 

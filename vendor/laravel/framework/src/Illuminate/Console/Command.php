@@ -16,7 +16,6 @@ class Command extends SymfonyCommand
         Concerns\HasParameters,
         Concerns\InteractsWithIO,
         Concerns\InteractsWithSignals,
-        Concerns\PromptsForMissingInput,
         Macroable;
 
     /**
@@ -43,7 +42,7 @@ class Command extends SymfonyCommand
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description;
 
@@ -60,27 +59,6 @@ class Command extends SymfonyCommand
      * @var bool
      */
     protected $hidden = false;
-
-    /**
-     * Indicates whether only one instance of the command can run at any given time.
-     *
-     * @var bool
-     */
-    protected $isolated = false;
-
-    /**
-     * The default exit code for isolated commands.
-     *
-     * @var int
-     */
-    protected $isolatedExitCode = self::SUCCESS;
-
-    /**
-     * The console command name aliases.
-     *
-     * @var array
-     */
-    protected $aliases;
 
     /**
      * Create a new console command instance.
@@ -101,19 +79,11 @@ class Command extends SymfonyCommand
         // Once we have constructed the command, we'll set the description and other
         // related properties of the command. If a signature wasn't used to build
         // the command we'll set the arguments and the options on this command.
-        if (! isset($this->description)) {
-            $this->setDescription((string) static::getDefaultDescription());
-        } else {
-            $this->setDescription((string) $this->description);
-        }
+        $this->setDescription((string) $this->description);
 
         $this->setHelp((string) $this->help);
 
         $this->setHidden($this->isHidden());
-
-        if (isset($this->aliases)) {
-            $this->setAliases((array) $this->aliases);
-        }
 
         if (! isset($this->signature)) {
             $this->specifyParameters();
@@ -154,7 +124,7 @@ class Command extends SymfonyCommand
             null,
             InputOption::VALUE_OPTIONAL,
             'Do not run the command if another instance of the command is already running',
-            $this->isolated
+            false
         ));
     }
 
@@ -199,7 +169,7 @@ class Command extends SymfonyCommand
 
             return (int) (is_numeric($this->option('isolated'))
                         ? $this->option('isolated')
-                        : $this->isolatedExitCode);
+                        : self::SUCCESS);
         }
 
         $method = method_exists($this, 'handle') ? 'handle' : '__invoke';

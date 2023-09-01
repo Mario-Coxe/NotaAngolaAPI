@@ -61,54 +61,12 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
     /**
      * Determine if a given attribute exists in the attribute array.
      *
-     * @param  array|string  $key
+     * @param  string  $key
      * @return bool
      */
     public function has($key)
     {
-        $keys = is_array($key) ? $key : func_get_args();
-
-        foreach ($keys as $value) {
-            if (! array_key_exists($value, $this->attributes)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Determine if any of the keys exist in the attribute array.
-     *
-     * @param  array|string  $key
-     * @return bool
-     */
-    public function hasAny($key)
-    {
-        if (! count($this->attributes)) {
-            return false;
-        }
-
-        $keys = is_array($key) ? $key : func_get_args();
-
-        foreach ($keys as $value) {
-            if ($this->has($value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine if a given attribute is missing from the attribute array.
-     *
-     * @param  string  $key
-     * @return bool
-     */
-    public function missing($key)
-    {
-        return ! $this->has($key);
+        return array_key_exists($key, $this->attributes);
     }
 
     /**
@@ -253,19 +211,6 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
     }
 
     /**
-     * Conditionally merge styles into the attribute bag.
-     *
-     * @param  mixed|array  $styleList
-     * @return static
-     */
-    public function style($styleList)
-    {
-        $styleList = Arr::wrap($styleList);
-
-        return $this->merge(['style' => Arr::toCssStyles($styleList)]);
-    }
-
-    /**
      * Merge additional attributes / values into the attribute bag.
      *
      * @param  array  $attributeDefaults
@@ -282,20 +227,15 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
 
         [$appendableAttributes, $nonAppendableAttributes] = collect($this->attributes)
                     ->partition(function ($value, $key) use ($attributeDefaults) {
-                        return $key === 'class' || $key === 'style' || (
-                            isset($attributeDefaults[$key]) &&
-                            $attributeDefaults[$key] instanceof AppendableAttributeValue
-                        );
+                        return $key === 'class' ||
+                               (isset($attributeDefaults[$key]) &&
+                                $attributeDefaults[$key] instanceof AppendableAttributeValue);
                     });
 
         $attributes = $appendableAttributes->mapWithKeys(function ($value, $key) use ($attributeDefaults, $escape) {
             $defaultsValue = isset($attributeDefaults[$key]) && $attributeDefaults[$key] instanceof AppendableAttributeValue
                         ? $this->resolveAppendableAttributeDefault($attributeDefaults, $key, $escape)
                         : ($attributeDefaults[$key] ?? '');
-
-            if ($key === 'style') {
-                $value = Str::finish($value, ';');
-            }
 
             return [$key => implode(' ', array_unique(array_filter([$defaultsValue, $value])))];
         })->merge($nonAppendableAttributes)->all();
@@ -470,8 +410,7 @@ class ComponentAttributeBag implements ArrayAccess, Htmlable, IteratorAggregate
             }
 
             if ($value === true) {
-                // Exception for Alpine...
-                $value = $key === 'x-data' ? '' : $key;
+                $value = $key;
             }
 
             $string .= ' '.$key.'="'.str_replace('"', '\\"', trim($value)).'"';

@@ -17,7 +17,6 @@ use Carbon\CarbonInterval;
 use Carbon\Exceptions\UnitException;
 use Closure;
 use DateInterval;
-use DateMalformedStringException;
 use ReturnTypeWillChange;
 
 /**
@@ -231,8 +230,6 @@ trait Units
      */
     public function addUnit($unit, $value = 1, $overflow = null)
     {
-        $originalArgs = \func_get_args();
-
         $date = $this;
 
         if (!is_numeric($value) || !(float) $value) {
@@ -305,21 +302,16 @@ trait Units
             $unit = 'second';
             $value = $second;
         }
+        $date = $date->modify("$value $unit");
 
-        try {
-            $date = $date->modify("$value $unit");
-
-            if (isset($timeString)) {
-                $date = $date->setTimeFromTimeString($timeString);
-            } elseif (isset($canOverflow, $day) && $canOverflow && $day !== $date->day) {
-                $date = $date->modify('last day of previous month');
-            }
-        } catch (DateMalformedStringException $ignoredException) { // @codeCoverageIgnore
-            $date = null; // @codeCoverageIgnore
+        if (isset($timeString)) {
+            $date = $date->setTimeFromTimeString($timeString);
+        } elseif (isset($canOverflow, $day) && $canOverflow && $day !== $date->day) {
+            $date = $date->modify('last day of previous month');
         }
 
         if (!$date) {
-            throw new UnitException('Unable to add unit '.var_export($originalArgs, true));
+            throw new UnitException('Unable to add unit '.var_export(\func_get_args(), true));
         }
 
         return $date;

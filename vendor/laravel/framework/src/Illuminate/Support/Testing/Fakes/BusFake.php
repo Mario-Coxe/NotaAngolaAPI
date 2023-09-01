@@ -3,7 +3,6 @@
 namespace Illuminate\Support\Testing\Fakes;
 
 use Closure;
-use Illuminate\Bus\BatchRepository;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Bus\QueueingDispatcher;
 use Illuminate\Support\Arr;
@@ -11,7 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\ReflectsClosures;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-class BusFake implements Fake, QueueingDispatcher
+class BusFake implements QueueingDispatcher
 {
     use ReflectsClosures;
 
@@ -20,7 +19,7 @@ class BusFake implements Fake, QueueingDispatcher
      *
      * @var \Illuminate\Contracts\Bus\QueueingDispatcher
      */
-    public $dispatcher;
+    protected $dispatcher;
 
     /**
      * The job types that should be intercepted instead of dispatched.
@@ -76,21 +75,20 @@ class BusFake implements Fake, QueueingDispatcher
      *
      * @param  \Illuminate\Contracts\Bus\QueueingDispatcher  $dispatcher
      * @param  array|string  $jobsToFake
-     * @param  \Illuminate\Bus\BatchRepository|null  $batchRepository
      * @return void
      */
-    public function __construct(QueueingDispatcher $dispatcher, $jobsToFake = [], BatchRepository $batchRepository = null)
+    public function __construct(QueueingDispatcher $dispatcher, $jobsToFake = [])
     {
         $this->dispatcher = $dispatcher;
         $this->jobsToFake = Arr::wrap($jobsToFake);
-        $this->batchRepository = $batchRepository ?: new BatchRepositoryFake;
+        $this->batchRepository = new BatchRepositoryFake;
     }
 
     /**
      * Specify the jobs that should be dispatched instead of faked.
      *
      * @param  array|string  $jobsToDispatch
-     * @return $this
+     * @return void
      */
     public function except($jobsToDispatch)
     {
@@ -127,21 +125,15 @@ class BusFake implements Fake, QueueingDispatcher
     /**
      * Assert if a job was pushed a number of times.
      *
-     * @param  string|\Closure  $command
+     * @param  string  $command
      * @param  int  $times
      * @return void
      */
     public function assertDispatchedTimes($command, $times = 1)
     {
-        $callback = null;
-
-        if ($command instanceof Closure) {
-            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
-        }
-
-        $count = $this->dispatched($command, $callback)->count() +
-                 $this->dispatchedAfterResponse($command, $callback)->count() +
-                 $this->dispatchedSync($command, $callback)->count();
+        $count = $this->dispatched($command)->count() +
+                 $this->dispatchedAfterResponse($command)->count() +
+                 $this->dispatchedSync($command)->count();
 
         PHPUnit::assertSame(
             $times, $count,
@@ -206,19 +198,13 @@ class BusFake implements Fake, QueueingDispatcher
     /**
      * Assert if a job was pushed synchronously a number of times.
      *
-     * @param  string|\Closure  $command
+     * @param  string  $command
      * @param  int  $times
      * @return void
      */
     public function assertDispatchedSyncTimes($command, $times = 1)
     {
-        $callback = null;
-
-        if ($command instanceof Closure) {
-            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
-        }
-
-        $count = $this->dispatchedSync($command, $callback)->count();
+        $count = $this->dispatchedSync($command)->count();
 
         PHPUnit::assertSame(
             $times, $count,
@@ -271,19 +257,13 @@ class BusFake implements Fake, QueueingDispatcher
     /**
      * Assert if a job was pushed after the response was sent a number of times.
      *
-     * @param  string|\Closure  $command
+     * @param  string  $command
      * @param  int  $times
      * @return void
      */
     public function assertDispatchedAfterResponseTimes($command, $times = 1)
     {
-        $callback = null;
-
-        if ($command instanceof Closure) {
-            [$command, $callback] = [$this->firstClosureParameterType($command), $command];
-        }
-
-        $count = $this->dispatchedAfterResponse($command, $callback)->count();
+        $count = $this->dispatchedAfterResponse($command)->count();
 
         PHPUnit::assertSame(
             $times, $count,

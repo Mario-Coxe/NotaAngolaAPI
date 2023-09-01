@@ -290,11 +290,7 @@ trait ManagesTransactions
     protected function performRollBack($toLevel)
     {
         if ($toLevel == 0) {
-            $pdo = $this->getPdo();
-
-            if ($pdo->inTransaction()) {
-                $pdo->rollBack();
-            }
+            $this->getPdo()->rollBack();
         } elseif ($this->queryGrammar->supportsSavepoints()) {
             $this->getPdo()->exec(
                 $this->queryGrammar->compileSavepointRollBack('trans'.($toLevel + 1))

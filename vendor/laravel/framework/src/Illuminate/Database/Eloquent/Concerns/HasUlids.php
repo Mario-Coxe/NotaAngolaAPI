@@ -2,29 +2,24 @@
 
 namespace Illuminate\Database\Eloquent\Concerns;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 
 trait HasUlids
 {
     /**
-     * Initialize the trait.
+     * Boot the trait.
      *
      * @return void
      */
-    public function initializeHasUlids()
+    public static function bootHasUlids()
     {
-        $this->usesUniqueIds = true;
-    }
-
-    /**
-     * Get the columns that should receive a unique identifier.
-     *
-     * @return array
-     */
-    public function uniqueIds()
-    {
-        return [$this->getKeyName()];
+        static::creating(function (self $model) {
+            foreach ($model->uniqueIds() as $column) {
+                if (empty($model->{$column})) {
+                    $model->{$column} = $model->newUniqueId();
+                }
+            }
+        });
     }
 
     /**
@@ -38,26 +33,13 @@ trait HasUlids
     }
 
     /**
-     * Retrieve the model for a bound value.
+     * Get the columns that should receive a unique identifier.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\Relation  $query
-     * @param  mixed  $value
-     * @param  string|null  $field
-     * @return \Illuminate\Database\Eloquent\Relations\Relation
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return array
      */
-    public function resolveRouteBindingQuery($query, $value, $field = null)
+    public function uniqueIds()
     {
-        if ($field && in_array($field, $this->uniqueIds()) && ! Str::isUlid($value)) {
-            throw (new ModelNotFoundException)->setModel(get_class($this), $value);
-        }
-
-        if (! $field && in_array($this->getRouteKeyName(), $this->uniqueIds()) && ! Str::isUlid($value)) {
-            throw (new ModelNotFoundException)->setModel(get_class($this), $value);
-        }
-
-        return parent::resolveRouteBindingQuery($query, $value, $field);
+        return [$this->getKeyName()];
     }
 
     /**

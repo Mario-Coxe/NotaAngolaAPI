@@ -118,7 +118,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
      * @param  string  $job
      * @param  mixed  $data
      * @param  string|null  $queue
-     * @return mixed
+     * @return void
      */
     public function later($delay, $job, $data = '', $queue = null)
     {
@@ -261,7 +261,7 @@ class DatabaseQueue extends Queue implements QueueContract, ClearableQueue
         if (Str::of($databaseVersion)->contains('MariaDB')) {
             $databaseEngine = 'mariadb';
             $databaseVersion = Str::before(Str::after($databaseVersion, '5.5.5-'), '-');
-        } elseif (Str::of($databaseVersion)->contains(['vitess', 'PlanetScale'])) {
+        } elseif (Str::of($databaseVersion)->contains('vitess')) {
             $databaseEngine = 'vitess';
             $databaseVersion = Str::before($databaseVersion, '-');
         }

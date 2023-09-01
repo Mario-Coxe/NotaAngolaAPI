@@ -30,7 +30,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         Concerns\HasGlobalScopes,
         Concerns\HasRelationships,
         Concerns\HasTimestamps,
-        Concerns\HasUniqueIds,
         Concerns\HidesAttributes,
         Concerns\GuardsAttributes,
         ForwardsCalls;
@@ -468,7 +467,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
-     * Register a callback that is responsible for handling missing attribute violations.
+     * Register a callback that is responsible for handling lazy loading violations.
      *
      * @param  callable|null  $callback
      * @return void
@@ -746,7 +745,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      *
      * @param  array|string  $relations
      * @param  string  $column
-     * @param  string|null  $function
+     * @param  string  $function
      * @return $this
      */
     public function loadAggregate($relations, $column, $function = null)
@@ -834,7 +833,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      * @param  string  $relation
      * @param  array  $relations
      * @param  string  $column
-     * @param  string|null  $function
+     * @param  string  $function
      * @return $this
      */
     public function loadMorphAggregate($relation, $relations, $column, $function = null)
@@ -951,8 +950,10 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     protected function incrementOrDecrement($column, $amount, $extra, $method)
     {
+        $query = $this->newQueryWithoutRelationships();
+
         if (! $this->exists) {
-            return $this->newQueryWithoutRelationships()->{$method}($column, $amount, $extra);
+            return $query->{$method}($column, $amount, $extra);
         }
 
         $this->{$column} = $this->isClassDeviable($column)
@@ -965,7 +966,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             return false;
         }
 
-        return tap($this->setKeysForSaveQuery($this->newQueryWithoutScopes())->{$method}($column, $amount, $extra), function () use ($column) {
+        return tap($this->setKeysForSaveQuery($query)->{$method}($column, $amount, $extra), function () use ($column) {
             $this->syncChanges();
 
             $this->fireModelEvent('updated', false);
@@ -1083,16 +1084,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     }
 
     /**
-     * Save the model and all of its relationships without raising any events to the parent model.
-     *
-     * @return bool
-     */
-    public function pushQuietly()
-    {
-        return static::withoutEvents(fn () => $this->push());
-    }
-
-    /**
      * Save the model to the database without raising any events.
      *
      * @param  array  $options
@@ -1162,7 +1153,9 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function saveOrFail(array $options = [])
     {
-        return $this->getConnection()->transaction(fn () => $this->save($options));
+        return $this->getConnection()->transaction(function () use ($options) {
+            return $this->save($options);
+        });
     }
 
     /**
@@ -1274,10 +1267,6 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     protected function performInsert(Builder $query)
     {
-        if ($this->usesUniqueIds()) {
-            $this->setUniqueIds();
-        }
-
         if ($this->fireModelEvent('creating') === false) {
             return false;
         }
@@ -1437,7 +1426,9 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
             return false;
         }
 
-        return $this->getConnection()->transaction(fn () => $this->delete());
+        return $this->getConnection()->transaction(function () {
+            return $this->delete();
+        });
     }
 
     /**
@@ -1552,7 +1543,9 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function newQueryForRestoration($ids)
     {
-        return $this->newQueryWithoutScopes()->whereKey($ids);
+        return is_array($ids)
+            ? $this->newQueryWithoutScopes()->whereIn($this->getQualifiedKeyName(), $ids)
+            : $this->newQueryWithoutScopes()->whereKey($ids);
     }
 
     /**
@@ -2317,17 +2310,12 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
      */
     public function __call($method, $parameters)
     {
-        if (in_array($method, ['increment', 'decrement', 'incrementQuietly', 'decrementQuietly'])) {
+        if (in_array($method, ['increment', 'decrement'])) {
             return $this->$method(...$parameters);
         }
 
-        if ($resolver = $this->relationResolver(static::class, $method)) {
+        if ($resolver = (static::$relationResolvers[get_class($this)][$method] ?? null)) {
             return $resolver($this);
-        }
-
-        if (Str::startsWith($method, 'through') &&
-            method_exists($this, $relationMethod = Str::of($method)->after('through')->lcfirst()->toString())) {
-            return $this->through($relationMethod);
         }
 
         return $this->forwardCallTo($this->newQuery(), $method, $parameters);

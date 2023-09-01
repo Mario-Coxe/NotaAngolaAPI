@@ -207,11 +207,6 @@ class Validator implements ValidatorContract
         'Declined',
         'DeclinedIf',
         'Filled',
-        'Missing',
-        'MissingIf',
-        'MissingUnless',
-        'MissingWith',
-        'MissingWithAll',
         'Present',
         'Required',
         'RequiredIf',
@@ -279,7 +274,7 @@ class Validator implements ValidatorContract
      *
      * @var string[]
      */
-    protected $numericRules = ['Numeric', 'Integer', 'Decimal'];
+    protected $numericRules = ['Numeric', 'Integer'];
 
     /**
      * The current placeholder for dots in rule keys.
@@ -302,11 +297,11 @@ class Validator implements ValidatorContract
      * @param  array  $data
      * @param  array  $rules
      * @param  array  $messages
-     * @param  array  $attributes
+     * @param  array  $customAttributes
      * @return void
      */
     public function __construct(Translator $translator, array $data, array $rules,
-                                array $messages = [], array $attributes = [])
+                                array $messages = [], array $customAttributes = [])
     {
         $this->dotPlaceholder = Str::random();
 
@@ -314,7 +309,7 @@ class Validator implements ValidatorContract
         $this->translator = $translator;
         $this->customMessages = $messages;
         $this->data = $this->parseData($data);
-        $this->customAttributes = $attributes;
+        $this->customAttributes = $customAttributes;
 
         $this->setRules($rules);
     }
@@ -383,19 +378,11 @@ class Validator implements ValidatorContract
     /**
      * Add an after validation callback.
      *
-     * @param  callable|array|string  $callback
+     * @param  callable|string  $callback
      * @return $this
      */
     public function after($callback)
     {
-        if (is_array($callback) && ! is_callable($callback)) {
-            foreach ($callback as $rule) {
-                $this->after(method_exists($rule, 'after') ? $rule->after(...) : $rule);
-            }
-
-            return $this;
-        }
-
         $this->after[] = fn () => $callback($this);
 
         return $this;
@@ -1095,18 +1082,6 @@ class Validator implements ValidatorContract
     }
 
     /**
-     * Set the value of a given attribute.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return void
-     */
-    public function setValue($attribute, $value)
-    {
-        Arr::set($this->data, $attribute, $value);
-    }
-
-    /**
      * Get the validation rules.
      *
      * @return array
@@ -1114,20 +1089,6 @@ class Validator implements ValidatorContract
     public function getRules()
     {
         return $this->rules;
-    }
-
-    /**
-     * Get the validation rules with key placeholders removed.
-     *
-     * @return array
-     */
-    public function getRulesWithoutPlaceholders()
-    {
-        return collect($this->rules)
-            ->mapWithKeys(fn ($value, $key) => [
-                str_replace($this->dotPlaceholder, '\\.', $key) => $value,
-            ])
-            ->all();
     }
 
     /**
@@ -1378,12 +1339,12 @@ class Validator implements ValidatorContract
     /**
      * Add custom attributes to the validator.
      *
-     * @param  array  $attributes
+     * @param  array  $customAttributes
      * @return $this
      */
-    public function addCustomAttributes(array $attributes)
+    public function addCustomAttributes(array $customAttributes)
     {
-        $this->customAttributes = array_merge($this->customAttributes, $attributes);
+        $this->customAttributes = array_merge($this->customAttributes, $customAttributes);
 
         return $this;
     }

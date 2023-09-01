@@ -25,6 +25,17 @@ class DumpCommand extends Command
                 {--prune : Delete all existing migration files}';
 
     /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'schema:dump';
+
+    /**
      * The console command description.
      *
      * @var string
@@ -36,7 +47,7 @@ class DumpCommand extends Command
      *
      * @param  \Illuminate\Database\ConnectionResolverInterface  $connections
      * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
-     * @return void
+     * @return int
      */
     public function handle(ConnectionResolverInterface $connections, Dispatcher $dispatcher)
     {
@@ -83,7 +94,7 @@ class DumpCommand extends Command
      */
     protected function path(Connection $connection)
     {
-        return tap($this->option('path') ?: database_path('schema/'.$connection->getName().'-schema.sql'), function ($path) {
+        return tap($this->option('path') ?: database_path('schema/'.$connection->getName().'-schema.dump'), function ($path) {
             (new Filesystem)->ensureDirectoryExists(dirname($path));
         });
     }

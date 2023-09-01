@@ -22,7 +22,7 @@ use Throwable;
  *
  * Depends on the following methods:
  *
- * @method static shiftTimezone($timezone) Set the timezone
+ * @method \Carbon\Carbon|\Carbon\CarbonImmutable shiftTimezone($timezone) Set the timezone
  */
 trait Options
 {
@@ -441,7 +441,7 @@ trait Options
             return $var;
         });
 
-        foreach (['dumpProperties', 'constructedObjectId', 'constructed'] as $property) {
+        foreach (['dumpProperties', 'constructedObjectId'] as $property) {
             if (isset($infos[$property])) {
                 unset($infos[$property]);
             }

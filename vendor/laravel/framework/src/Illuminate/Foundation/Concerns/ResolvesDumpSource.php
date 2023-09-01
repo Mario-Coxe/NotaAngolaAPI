@@ -30,16 +30,6 @@ trait ResolvesDumpSource
     ];
 
     /**
-     * Files that require special trace handling and their levels.
-     *
-     * @var array<string, int>
-     */
-    protected static $adjustableTraces = [
-        'symfony/var-dumper/Resources/functions/dump.php' => 1,
-        'Illuminate/Collections/Traits/EnumeratesValues.php' => 4,
-    ];
-
-    /**
      * The source resolver.
      *
      * @var (callable(): (array{0: string, 1: string, 2: int|null}|null))|null|false
@@ -66,21 +56,12 @@ trait ResolvesDumpSource
         $sourceKey = null;
 
         foreach ($trace as $traceKey => $traceFile) {
-            if (! isset($traceFile['file'])) {
-                continue;
-            }
+            if (isset($traceFile['file']) && str_ends_with(
+                $traceFile['file'],
+                'dump.php'
+            )) {
+                $sourceKey = $traceKey + 1;
 
-            foreach (self::$adjustableTraces as $name => $key) {
-                if (str_ends_with(
-                    $traceFile['file'],
-                    str_replace('/', DIRECTORY_SEPARATOR, $name)
-                )) {
-                    $sourceKey = $traceKey + $key;
-                    break;
-                }
-            }
-
-            if (! is_null($sourceKey)) {
                 break;
             }
         }
@@ -118,7 +99,7 @@ trait ResolvesDumpSource
      */
     protected function isCompiledViewFile($file)
     {
-        return str_starts_with($file, $this->compiledViewPath) && str_ends_with($file, '.php');
+        return str_starts_with($file, $this->compiledViewPath);
     }
 
     /**
@@ -149,7 +130,7 @@ trait ResolvesDumpSource
     {
         try {
             $editor = config('app.editor');
-        } catch (Throwable) {
+        } catch (Throwable $e) {
             // ..
         }
 

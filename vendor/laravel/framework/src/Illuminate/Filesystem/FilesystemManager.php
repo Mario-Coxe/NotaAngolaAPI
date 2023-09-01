@@ -23,7 +23,6 @@ use League\Flysystem\Visibility;
 
 /**
  * @mixin \Illuminate\Contracts\Filesystem\Filesystem
- * @mixin \Illuminate\Filesystem\FilesystemAdapter
  */
 class FilesystemManager implements FactoryContract
 {
@@ -86,7 +85,7 @@ class FilesystemManager implements FactoryContract
     /**
      * Get a default cloud filesystem instance.
      *
-     * @return \Illuminate\Contracts\Filesystem\Cloud
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
     public function cloud()
     {
@@ -266,7 +265,7 @@ class FilesystemManager implements FactoryContract
             $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
         }
 
-        return Arr::except($config, ['token']);
+        return $config;
     }
 
     /**

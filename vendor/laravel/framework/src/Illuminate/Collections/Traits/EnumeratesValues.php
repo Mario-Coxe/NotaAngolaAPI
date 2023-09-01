@@ -19,8 +19,7 @@ use UnitEnum;
 
 /**
  * @template TKey of array-key
- *
- * @template-covariant TValue
+ * @template TValue
  *
  * @property-read HigherOrderCollectionProxy $average
  * @property-read HigherOrderCollectionProxy $avg
@@ -115,10 +114,11 @@ trait EnumeratesValues
     /**
      * Wrap the given value in a collection if applicable.
      *
+     * @template TWrapKey of array-key
      * @template TWrapValue
      *
-     * @param  iterable<array-key, TWrapValue>|TWrapValue  $value
-     * @return static<array-key, TWrapValue>
+     * @param  iterable<TWrapKey, TWrapValue>  $value
+     * @return static<TWrapKey, TWrapValue>
      */
     public static function wrap($value)
     {
@@ -193,6 +193,32 @@ trait EnumeratesValues
     public function some($key, $operator = null, $value = null)
     {
         return $this->contains(...func_get_args());
+    }
+
+    /**
+     * Determine if an item exists, using strict comparison.
+     *
+     * @param  (callable(TValue): bool)|TValue|array-key  $key
+     * @param  TValue|null  $value
+     * @return bool
+     */
+    public function containsStrict($key, $value = null)
+    {
+        if (func_num_args() === 2) {
+            return $this->contains(fn ($item) => data_get($item, $key) === $value);
+        }
+
+        if ($this->useAsCallable($key)) {
+            return ! is_null($this->first($key));
+        }
+
+        foreach ($this as $item) {
+            if ($item === $key) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -297,11 +323,9 @@ trait EnumeratesValues
     /**
      * Get a single key's value from the first matching item in the collection.
      *
-     * @template TValueDefault
-     *
      * @param  string  $key
-     * @param  TValueDefault|(\Closure(): TValueDefault)  $default
-     * @return TValue|TValueDefault
+     * @param  mixed  $default
+     * @return mixed
      */
     public function value($key, $default = null)
     {
@@ -360,11 +384,8 @@ trait EnumeratesValues
     /**
      * Map a collection and flatten the result by a single level.
      *
-     * @template TFlatMapKey of array-key
-     * @template TFlatMapValue
-     *
-     * @param  callable(TValue, TKey): (\Illuminate\Support\Collection<TFlatMapKey, TFlatMapValue>|array<TFlatMapKey, TFlatMapValue>)  $callback
-     * @return static<TFlatMapKey, TFlatMapValue>
+     * @param  callable(TValue, TKey): mixed  $callback
+     * @return static<int, mixed>
      */
     public function flatMap(callable $callback)
     {
@@ -697,10 +718,8 @@ trait EnumeratesValues
     /**
      * Pass the collection into a new class.
      *
-     * @template TPipeIntoValue
-     *
-     * @param  class-string<TPipeIntoValue>  $class
-     * @return TPipeIntoValue
+     * @param  class-string  $class
+     * @return mixed
      */
     public function pipeInto($class)
     {
@@ -770,24 +789,9 @@ trait EnumeratesValues
     }
 
     /**
-     * Reduce an associative collection to a single value.
-     *
-     * @template TReduceWithKeysInitial
-     * @template TReduceWithKeysReturnType
-     *
-     * @param  callable(TReduceWithKeysInitial|TReduceWithKeysReturnType, TValue, TKey): TReduceWithKeysReturnType  $callback
-     * @param  TReduceWithKeysInitial  $initial
-     * @return TReduceWithKeysReturnType
-     */
-    public function reduceWithKeys(callable $callback, $initial = null)
-    {
-        return $this->reduce($callback, $initial);
-    }
-
-    /**
      * Create a collection of all elements that do not pass a given truth test.
      *
-     * @param  (callable(TValue, TKey): bool)|bool|TValue  $callback
+     * @param  (callable(TValue, TKey): bool)|bool  $callback
      * @return static
      */
     public function reject($callback = true)
@@ -972,17 +976,21 @@ trait EnumeratesValues
     {
         if (is_array($items)) {
             return $items;
+        } elseif ($items instanceof Enumerable) {
+            return $items->all();
+        } elseif ($items instanceof Arrayable) {
+            return $items->toArray();
+        } elseif ($items instanceof Traversable) {
+            return iterator_to_array($items);
+        } elseif ($items instanceof Jsonable) {
+            return json_decode($items->toJson(), true);
+        } elseif ($items instanceof JsonSerializable) {
+            return (array) $items->jsonSerialize();
+        } elseif ($items instanceof UnitEnum) {
+            return [$items];
         }
 
-        return match (true) {
-            $items instanceof Enumerable => $items->all(),
-            $items instanceof Arrayable => $items->toArray(),
-            $items instanceof Traversable => iterator_to_array($items),
-            $items instanceof Jsonable => json_decode($items->toJson(), true),
-            $items instanceof JsonSerializable => (array) $items->jsonSerialize(),
-            $items instanceof UnitEnum => [$items],
-            default => (array) $items,
-        };
+        return (array) $items;
     }
 
     /**

@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(name: 'env:encrypt')]
@@ -22,6 +21,17 @@ class EnvironmentEncryptCommand extends Command
                     {--cipher= : The encryption cipher}
                     {--env= : The environment to be encrypted}
                     {--force : Overwrite the existing encrypted environment file}';
+
+    /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'env:encrypt';
 
     /**
      * The console command description.
@@ -86,7 +96,7 @@ class EnvironmentEncryptCommand extends Command
         }
 
         try {
-            $encrypter = new Encrypter($this->parseKey($key), $cipher);
+            $encrypter = new Encrypter($key, $cipher);
 
             $this->files->put(
                 $encryptedFile,
@@ -100,25 +110,10 @@ class EnvironmentEncryptCommand extends Command
 
         $this->components->info('Environment successfully encrypted.');
 
-        $this->components->twoColumnDetail('Key', $keyPassed ? $key : 'base64:'.base64_encode($key));
+        $this->components->twoColumnDetail('Key', ($keyPassed ? $key : 'base64:'.base64_encode($key)));
         $this->components->twoColumnDetail('Cipher', $cipher);
         $this->components->twoColumnDetail('Encrypted file', $encryptedFile);
 
         $this->newLine();
-    }
-
-    /**
-     * Parse the encryption key.
-     *
-     * @param  string  $key
-     * @return string
-     */
-    protected function parseKey(string $key)
-    {
-        if (Str::startsWith($key, $prefix = 'base64:')) {
-            $key = base64_decode(Str::after($key, $prefix));
-        }
-
-        return $key;
     }
 }

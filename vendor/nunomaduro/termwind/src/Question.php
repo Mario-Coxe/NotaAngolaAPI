@@ -50,18 +50,10 @@ final class Question
 
     /**
      * Renders a prompt to the user.
-     *
-     * @param  iterable<array-key, string>|null  $autocomplete
      */
-    public function ask(string $question, iterable $autocomplete = null): mixed
+    public function ask(string $question): mixed
     {
         $html = (new HtmlRenderer)->parse($question)->toString();
-
-        $question = new SymfonyQuestion($html);
-
-        if ($autocomplete !== null) {
-            $question->setAutocompleterValues($autocomplete);
-        }
 
         $output = Termwind::getRenderer();
 
@@ -78,7 +70,7 @@ final class Question
             $property->setValue($output, new QuestionHelper);
 
             try {
-                return $output->askQuestion($question);
+                return $output->ask($html);
             } finally {
                 $property->setValue($output, $currentHelper);
             }
@@ -87,7 +79,7 @@ final class Question
         return $this->helper->ask(
             self::getStreamableInput(),
             Termwind::getRenderer(),
-            $question,
+            new SymfonyQuestion($html)
         );
     }
 }

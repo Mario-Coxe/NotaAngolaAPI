@@ -40,18 +40,16 @@ class NestedRules
             Arr::undot(Arr::wrap($data))
         );
 
-        if (is_array($rules) && ! array_is_list($rules)) {
+        if (is_array($rules) && Arr::isAssoc($rules)) {
             $nested = [];
 
             foreach ($rules as $key => $rule) {
                 $nested[$attribute.'.'.$key] = $rule;
             }
 
-            $rules = $nested;
-        } else {
-            $rules = [$attribute => $rules];
+            return $parser->explode($nested);
         }
 
-        return $parser->explode(ValidationRuleParser::filterConditionalRules($rules, $data));
+        return $parser->explode([$attribute => $rules]);
     }
 }

@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Support\Traits\ForwardsCalls;
@@ -104,7 +103,7 @@ abstract class Factory
      *
      * @var string
      */
-    public static $namespace = 'Database\\Factories\\';
+    protected static $namespace = 'Database\\Factories\\';
 
     /**
      * The default model name resolver.
@@ -329,12 +328,6 @@ abstract class Factory
 
             $model->save();
 
-            foreach ($model->getRelations() as $name => $items) {
-                if ($items instanceof Enumerable && $items->isEmpty()) {
-                    $model->unsetRelation($name);
-                }
-            }
-
             $this->createChildren($model);
         });
     }
@@ -471,7 +464,7 @@ abstract class Factory
         return collect($definition)
             ->map($evaluateRelations = function ($attribute) {
                 if ($attribute instanceof self) {
-                    $attribute = $this->getRandomRecycledModel($attribute->modelName())?->getKey()
+                    $attribute = $this->getRandomRecycledModel($attribute->modelName())
                         ?? $attribute->recycle($this->recycle)->create()->getKey();
                 } elseif ($attribute instanceof Model) {
                     $attribute = $attribute->getKey();
@@ -525,7 +518,7 @@ abstract class Factory
     /**
      * Add a new sequenced state transformation to the model definition.
      *
-     * @param  mixed  ...$sequence
+     * @param  array  $sequence
      * @return static
      */
     public function sequence(...$sequence)
@@ -536,7 +529,7 @@ abstract class Factory
     /**
      * Add a new sequenced state transformation to the model definition and update the pending creation count to the size of the sequence.
      *
-     * @param  array  ...$sequence
+     * @param  array  $sequence
      * @return static
      */
     public function forEachSequence(...$sequence)
@@ -547,7 +540,7 @@ abstract class Factory
     /**
      * Add a new cross joined sequenced state transformation to the model definition.
      *
-     * @param  array  ...$sequence
+     * @param  array  $sequence
      * @return static
      */
     public function crossJoinSequence(...$sequence)
@@ -874,7 +867,7 @@ abstract class Factory
             return Container::getInstance()
                             ->make(Application::class)
                             ->getNamespace();
-        } catch (Throwable) {
+        } catch (Throwable $e) {
             return 'App\\';
         }
     }

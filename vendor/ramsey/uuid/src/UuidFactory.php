@@ -313,14 +313,6 @@ class UuidFactory implements UuidFactoryInterface
     }
 
     /**
-     * @psalm-pure
-     */
-    public function fromHexadecimal(Hexadecimal $hex): UuidInterface
-    {
-        return $this->codec->decode($hex->__toString());
-    }
-
-    /**
      * @inheritDoc
      */
     public function uuid1($node = null, ?int $clockSeq = null): UuidInterface
@@ -444,7 +436,6 @@ class UuidFactory implements UuidFactoryInterface
      */
     public function uuid(string $bytes): UuidInterface
     {
-        /** @psalm-suppress ImpurePropertyFetch */
         return $this->uuidBuilder->build($this->codec, $bytes);
     }
 
@@ -507,7 +498,6 @@ class UuidFactory implements UuidFactoryInterface
             return LazyUuidFromString::fromBytes($bytes);
         }
 
-        /** @psalm-suppress ImpureVariable */
         return $this->uuid($bytes);
     }
 }

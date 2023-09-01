@@ -3,7 +3,7 @@
 /*
  * This file is part of Psy Shell.
  *
- * (c) 2012-2023 Justin Hileman
+ * (c) 2012-2022 Justin Hileman
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,8 +15,8 @@ use Psy\CodeCleaner\NoReturnValue;
 use Psy\Exception\BreakException;
 use Psy\Exception\ErrorException;
 use Psy\Exception\Exception as PsyException;
-use Psy\Exception\RuntimeException;
 use Psy\Exception\ThrowUpException;
+use Psy\Exception\TypeErrorException;
 use Psy\ExecutionLoop\ProcessForker;
 use Psy\ExecutionLoop\RunkitReloader;
 use Psy\Formatter\TraceFormatter;
@@ -49,7 +49,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Shell extends Application
 {
-    const VERSION = 'v0.11.19';
+    const VERSION = 'v0.11.9';
 
     /** @deprecated */
     const PROMPT = '>>> ';
@@ -229,7 +229,7 @@ class Shell extends Application
     }
 
     /**
-     * @return Matcher\AbstractMatcher[]
+     * @return array
      */
     protected function getDefaultMatchers(): array
     {
@@ -339,7 +339,7 @@ class Shell extends Application
 
         try {
             return parent::run($input, $output);
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             $this->writeException($e);
         }
 
@@ -349,7 +349,7 @@ class Shell extends Application
     /**
      * Runs PsySH.
      *
-     * @throws \Throwable if thrown via the `throw-up` command
+     * @throws \Exception if thrown via the `throw-up` command
      *
      * @param InputInterface  $input  An Input instance
      * @param OutputInterface $output An Output instance
@@ -375,7 +375,7 @@ class Shell extends Application
      * Initializes tab completion and readline history, then spins up the
      * execution loop.
      *
-     * @throws \Throwable if thrown via the `throw-up` command
+     * @throws \Exception if thrown via the `throw-up` command
      *
      * @return int 0 if everything went fine, or an error code
      */
@@ -471,6 +471,8 @@ class Shell extends Application
             foreach ($__psysh__->getIncludes() as $__psysh_include__) {
                 try {
                     include_once $__psysh_include__;
+                } catch (\Error $_e) {
+                    $__psysh__->writeException(ErrorException::fromError($_e));
                 } catch (\Exception $_e) {
                     $__psysh__->writeException($_e);
                 }
@@ -594,6 +596,8 @@ class Shell extends Application
      * Run execution loop listeners on user input.
      *
      * @param string $input
+     *
+     * @return string
      */
     public function onInput(string $input): string
     {
@@ -610,6 +614,8 @@ class Shell extends Application
      * Run execution loop listeners on code to be executed.
      *
      * @param string $code
+     *
+     * @return string
      */
     public function onExecute(string $code): string
     {
@@ -626,7 +632,7 @@ class Shell extends Application
             $output = $output->getErrorOutput();
         }
 
-        $output->writeln(\sprintf('<whisper>%s</whisper>', OutputFormatter::escape($code)), ConsoleOutput::VERBOSITY_DEBUG);
+        $output->writeln(\sprintf('<aside>%s</aside>', OutputFormatter::escape($code)), ConsoleOutput::VERBOSITY_DEBUG);
 
         return $code;
     }
@@ -810,7 +816,7 @@ class Shell extends Application
     /**
      * Get PHP files to be parsed and executed before running the interactive shell.
      *
-     * @return string[]
+     * @return array
      */
     public function getIncludes(): array
     {
@@ -905,7 +911,7 @@ class Shell extends Application
      *
      * This is useful for commands which manipulate the buffer.
      *
-     * @return string[]
+     * @return array
      */
     public function getCodeBuffer(): array
     {
@@ -933,9 +939,6 @@ class Shell extends Application
 
         if ($input->hasParameterOption(['--help', '-h'])) {
             $helpCommand = $this->get('help');
-            if (!$helpCommand instanceof Command\HelpCommand) {
-                throw new RuntimeException('Invalid help command instance');
-            }
             $helpCommand->setCommand($command);
 
             return $helpCommand->run(new StringInput(''), $this->output);
@@ -1147,16 +1150,16 @@ class Shell extends Application
     }
 
     /**
-     * Renders a caught Exception or Error.
+     * Renders a caught Exception.
      *
      * Exceptions are formatted according to severity. ErrorExceptions which were
      * warnings or Strict errors aren't rendered as harshly as real errors.
      *
      * Stores $e as the last Exception in the Shell Context.
      *
-     * @param \Throwable $e An exception or error instance
+     * @param \Exception $e An exception instance
      */
-    public function writeException(\Throwable $e)
+    public function writeException(\Exception $e)
     {
         // No need to write the break exception during a non-interactive run.
         if ($e instanceof BreakException && $this->nonInteractive) {
@@ -1203,6 +1206,8 @@ class Shell extends Application
      * Check whether the last exec was successful.
      *
      * Returns true if a return value was logged rather than an exception.
+     *
+     * @return bool
      */
     public function getLastExecSuccess(): bool
     {
@@ -1210,13 +1215,15 @@ class Shell extends Application
     }
 
     /**
-     * Helper for formatting an exception or error for writeException().
+     * Helper for formatting an exception for writeException().
      *
      * @todo extract this to somewhere it makes more sense
      *
-     * @param \Throwable $e
+     * @param \Exception $e
+     *
+     * @return string
      */
-    public function formatException(\Throwable $e): string
+    public function formatException(\Exception $e): string
     {
         $indent = $this->config->theme()->compact() ? '' : '  ';
 
@@ -1259,6 +1266,8 @@ class Shell extends Application
      * Helper for getting an output style for the given ErrorException's level.
      *
      * @param \ErrorException $e
+     *
+     * @return string
      */
     protected function getSeverity(\ErrorException $e): string
     {
@@ -1288,11 +1297,13 @@ class Shell extends Application
     /**
      * Helper for getting an output style for the given ErrorException's level.
      *
-     * @param \Throwable $e
+     * @param \Exception $e
+     *
+     * @return string
      */
-    protected function getMessageLabel(\Throwable $e): string
+    protected function getMessageLabel(\Exception $e): string
     {
-        if ($e instanceof \ErrorException) {
+        if ($e instanceof ErrorException) {
             $severity = $e->getSeverity();
 
             if ($severity & \error_reporting()) {
@@ -1349,7 +1360,11 @@ class Shell extends Application
 
         try {
             return $closure->execute();
-        } catch (\Throwable $_e) {
+        } catch (\TypeError $_e) {
+            $this->writeException(TypeErrorException::fromTypeError($_e));
+        } catch (\Error $_e) {
+            $this->writeException(ErrorException::fromError($_e));
+        } catch (\Exception $_e) {
             $this->writeException($_e);
         }
     }
@@ -1507,6 +1522,8 @@ class Shell extends Application
 
     /**
      * Get the shell output header.
+     *
+     * @return string
      */
     protected function getHeader(): string
     {
@@ -1517,6 +1534,8 @@ class Shell extends Application
      * Get the current version of Psy Shell.
      *
      * @deprecated call self::getVersionHeader instead
+     *
+     * @return string
      */
     public function getVersion(): string
     {
@@ -1527,6 +1546,8 @@ class Shell extends Application
      * Get a pretty header including the current version of Psy Shell.
      *
      * @param bool $useUnicode
+     *
+     * @return string
      */
     public static function getVersionHeader(bool $useUnicode = false): string
     {

@@ -22,7 +22,7 @@ class EncryptCookies
     /**
      * The names of the cookies that should not be encrypted.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $except = [];
 
@@ -84,7 +84,7 @@ class EncryptCookies
                 $value = $this->decryptCookie($key, $cookie);
 
                 $request->cookies->set($key, $this->validateValue($key, $value));
-            } catch (DecryptException) {
+            } catch (DecryptException $e) {
                 $request->cookies->set($key, null);
             }
         }

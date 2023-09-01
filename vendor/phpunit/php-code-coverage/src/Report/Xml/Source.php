@@ -19,7 +19,8 @@ use TheSeer\Tokenizer\XMLSerializer;
  */
 final class Source
 {
-    private readonly DOMElement $context;
+    /** @var DOMElement */
+    private $context;
 
     public function __construct(DOMElement $context)
     {
@@ -30,7 +31,7 @@ final class Source
     {
         $context = $this->context;
 
-        $tokens = (new Tokenizer)->parse($source);
+        $tokens = (new Tokenizer())->parse($source);
         $srcDom = (new XMLSerializer(new NamespaceUri($context->namespaceURI)))->toDom($tokens);
 
         $context->parentNode->replaceChild(
