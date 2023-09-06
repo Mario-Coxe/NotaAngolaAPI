@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('disciplinas', function (Blueprint $table) {
             $table->id();
             $table->string('nome', 100)->unique();
-            $table->unsignedBigInteger('instituicaoId'); // Adicione esta linha
+            // $table->unsignedBigInteger('instituicaoId'); // Adicione esta linha
             $table->timestamps();
 
-            $table->foreign('instituicaoId')->references('idInstituicao')->on('instituicoes');
+            // $table->foreign('instituicaoId')->references('idInstituicao')->on('instituicoes');
         });
     }
 

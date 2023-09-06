@@ -11,19 +11,19 @@ class Turma extends Model
 
     protected $table = 'turmas'; // Nome da tabela no banco de dados
     protected $primaryKey = 'id'; // Chave primária da tabela
-    protected $fillable = ['nome', 'professorId', 'instituicaoId']; // Colunas que podem ser preenchidas
+    protected $fillable = ['nome', 'professorId', '']; // Colunas que podem ser preenchidas
 
     // Relacionamento com o modelo Professor
     public function professor()
     {
         return $this->belongsTo(Professor::class, 'professorId');
     }
-
+    
     // Relacionamento com o modelo Instituicao
-    public function instituicao()
-    {
-        return $this->belongsTo(Instituicao::class, 'instituicaoId');
-    }
+    // public function instituicao()
+    // {
+    //     return $this->belongsTo(Instituicao::class, 'instituicaoId');
+    // }
     public function alunos()
     {
         return $this->hasMany(Student::class, 'idTurma', 'id');

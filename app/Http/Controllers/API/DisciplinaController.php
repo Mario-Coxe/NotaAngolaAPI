@@ -14,7 +14,7 @@ class DisciplinaController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:100|unique:disciplinas',
-            'instituicaoId' => 'required|integer',
+            // 'instituicaoId' => 'required|integer',
         ]);
 
         // Verifica se a instituição existe

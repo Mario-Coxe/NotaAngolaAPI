@@ -27,10 +27,10 @@ class Student extends Model
 
 
     // Relação com a instituição
-    public function institution()
-    {
-        return $this->belongsTo(Instituicao::class, 'idInstituicao');
-    }
+    // public function institution()
+    // {
+    //     return $this->belongsTo(Instituicao::class, 'idInstituicao');
+    // }
 
 
     // Relação com o encarregado
@@ -39,16 +39,24 @@ class Student extends Model
         return $this->belongsTo(Encarregado::class, 'idEncarregado');
     }
 
-    public function student()
-    {
-        return $this->hasMany(Student::class, 'idInstituicao');
-    }
+    // public function student()
+    // {
+    //     return $this->hasMany(Student::class, 'idInstituicao');
+    // }
 
     public function notas()
     {
         return $this->hasMany(Nota::class, 'alunoId', 'idAluno');
     }
 
-    
+    public function encarregado()
+    {
+        return $this->belongsTo(Encarregado::class, 'idEncarregado');
+    }
+
+    public function turma()
+    {
+        return $this->belongsTo(Turma::class, 'idTurma');
+    }
 
 }

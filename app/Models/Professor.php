@@ -19,4 +19,5 @@ class Professor extends Model
     {
         return $this->belongsToMany(Instituicao::class, 'professor_instituicao', 'professorId', 'instituicaoId');
     }
+
 }

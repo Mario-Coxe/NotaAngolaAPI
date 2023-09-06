@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('encarregados', function (Blueprint $table) {
             $table->id('idEncarregado'); // Chave primária auto incremento
-            $table->string('nome', 100);
-            $table->enum('parentesco', ['Pai', 'Mãe', 'Tio', 'Tia', 'Avó', 'Outro']);
-            $table->string('telefone', 200);
-            $table->string('email', 100); // Definir 'email' como UNIQUE
-            $table->string('senha', 100); // Coluna para armazenar a senha (não armazene senhas em texto puro no banco de dados, utilize algum método de hash para armazenar senhas com segurança)
+            $table->string('nome', 100)->unique();
+            $table->enum('parentesco', ['Pai', 'Mãe', 'Tio', 'Tia', 'Avó', 'Outro'])->unique();
+            $table->string('telefone', 200)->unique();
+            $table->string('email', 100)->unique(); // Definir 'email' como UNIQUE
+            $table->string('senha', 100)->unique(); // Coluna para armazenar a senha (não armazene senhas em texto puro no banco de dados, utilize algum método de hash para armazenar senhas com segurança)
             //$table->integer('Instituicao')->nullable();
             $table->timestamps();
 

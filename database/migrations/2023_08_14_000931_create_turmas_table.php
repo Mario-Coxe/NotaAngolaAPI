@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 100);
             $table->unsignedBigInteger('professorId');
-            $table->unsignedBigInteger('instituicaoId');
+            // $table->unsignedBigInteger('instituicaoId');
             $table->timestamps();
 
             $table->foreign('professorId')->references('idProfessor')->on('professores');
-            $table->foreign('instituicaoId')->references('idInstituicao')->on('instituicoes');
+            // $table->foreign('instituicaoId')->references('idInstituicao')->on('instituicoes');
         });
     }
 

@@ -28,7 +28,7 @@ class Nota extends Model
 
     public function aluno()
     {
-        return $this->belongsTo(Aluno::class, 'alunoId', 'idAluno');
+        return $this->belongsTo(Student::class, 'alunoId', 'idAluno');
     }
 
     public function disciplina()
